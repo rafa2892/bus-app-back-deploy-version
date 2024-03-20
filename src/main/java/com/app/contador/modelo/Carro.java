@@ -22,12 +22,13 @@ public class Carro {
 
     private String modelo;
 
+    private String marca;
+
     @Column(name = "anyo")
     private Long anyo;
 
     @Column(name = "consumo")
     private Long consumo;
-
 
     @Column(name = "numeroUnidad", unique = true)
     private Long numeroUnidad;
