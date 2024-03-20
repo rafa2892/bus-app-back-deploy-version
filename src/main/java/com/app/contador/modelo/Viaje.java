@@ -18,10 +18,6 @@ public class Viaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     public Long id;
 
-    public String partida;
-
-    public String destino;
-
     private Date fechaViaje;
 
     @ManyToOne

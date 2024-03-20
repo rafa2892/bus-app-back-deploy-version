@@ -1,6 +1,8 @@
 package com.app.contador.DTO;
 
+import com.app.contador.modelo.Carro;
 import com.app.contador.modelo.Conductor;
+import com.app.contador.modelo.Ruta;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -11,24 +13,12 @@ import java.util.Date;
 public class ViajeDTO {
 
     private Long id;
-    private String origen;
-    private String destino;
-
     private Date fecha;
-    private String carroDescripcion;
-
-    private Long carroId;
-
     private Conductor conductor;
+    private Ruta ruta;
+    private Carro carro;
 
-
-    // Constructor
-    public ViajeDTO(Long viajeId, String origen, String destino, Date fecha, String carroDescripcion, Conductor conductor) {
-        this.id = viajeId;
-        this.origen = origen;
-        this.destino = destino;
-        this.fecha = fecha;
-        this.carroDescripcion = carroDescripcion;
-        this.conductor = conductor;
+    public ViajeDTO() {
     }
+
 }

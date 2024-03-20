@@ -36,20 +36,32 @@ public class ViajeControlador {
         List<ViajeDTO> viajeDTOList = new ArrayList<>();
 
         for (Viaje viaje: listaViajes) {
-            viajeDTOList.add(new ViajeDTO(viaje.getId(),viaje.getPartida(),viaje.getDestino(),viaje.getFechaViaje(), viaje.getCarro().getModelo(), viaje.getConductor()));
+            fillListViajeDto(viaje, viajeDTOList);
         }
 
         return viajeDTOList;
+    }
+
+    private void fillListViajeDto(Viaje viaje, List<ViajeDTO> viajeDTOList) {
+
+        ViajeDTO viajeDTO = new ViajeDTO();
+
+        viajeDTO.setId(viaje.getId());
+        viajeDTO.setRuta(viaje.getRuta());
+        viajeDTO.setFecha(viaje.getFechaViaje());
+        viajeDTO.setCarro(viaje.getCarro());
+        viajeDTO.setConductor(viaje.getConductor());
+
+        viajeDTOList.add(viajeDTO);
     }
 
     @PostMapping("/viajes")
     public Viaje guardarViaje(@RequestBody ViajeDTO viajeDTO) {
 
         Viaje viaje = new Viaje();
-        Carro carro = repositorio.findById(viajeDTO.getCarroId()).get();
+        Carro carro = repositorio.findById(viajeDTO.getCarro().getId()).get();
 
-        viaje.setPartida(viajeDTO.getOrigen());
-        viaje.setDestino(viajeDTO.getDestino());
+        viaje.setRuta(viajeDTO.getRuta());
         viaje.setCarro(carro);
         viaje.setFechaViaje(new Date());
         viaje.setConductor(viajeDTO.getConductor());
