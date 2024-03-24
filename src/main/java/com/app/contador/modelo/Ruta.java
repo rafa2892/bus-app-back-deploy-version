@@ -20,5 +20,7 @@ public class Ruta {
 
     public String distancia;
 
+    public String numRutaIdentificativo;
+
 
 }
