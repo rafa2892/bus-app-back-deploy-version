@@ -1,5 +1,7 @@
 package com.app.contador.modelo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -33,8 +35,16 @@ public class Carro {
     @Column(name = "numeroUnidad", unique = true)
     private Long numeroUnidad;
 
-//    @OneToMany(mappedBy = "carro")
-//    private List<Viaje> viajes;
+    @Lob // Anotación para campos grandes
+    @Column(name = "imagen", columnDefinition = "MEDIUMBLOB")
+    private byte[] imagen;
+
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL)
+    private List<Imagen> imagenes;
+
+
 
 
 
