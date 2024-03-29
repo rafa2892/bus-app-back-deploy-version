@@ -20,6 +20,9 @@ public class Imagen {
     @Column(name = "imagen", columnDefinition = "MEDIUMBLOB")
     private byte[] imagen;
 
+    @Column(name = "imagenUrl")
+    private String imagenUrl;
+
     @Column(name="imagen_desc")
     private String imagenDesc;
 

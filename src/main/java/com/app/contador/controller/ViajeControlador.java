@@ -58,7 +58,7 @@ public class ViajeControlador {
     @PostMapping("/viajes")
     public Viaje guardarViaje(@RequestBody ViajeDTO viajeDTO) {
 
-          Viaje viaje = new Viaje();
+        Viaje viaje = new Viaje();
         Carro carro = repositorio.findById(viajeDTO.getCarro().getId()).get();
 
         viaje.setRuta(viajeDTO.getRuta());

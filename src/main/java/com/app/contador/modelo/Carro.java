@@ -35,14 +35,12 @@ public class Carro {
     @Column(name = "numeroUnidad", unique = true)
     private Long numeroUnidad;
 
-    @Lob // Anotación para campos grandes
-    @Column(name = "imagen", columnDefinition = "MEDIUMBLOB")
-    private byte[] imagen;
-
 
     @JsonManagedReference
     @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL)
     private List<Imagen> imagenes;
+
+
 
 
 
