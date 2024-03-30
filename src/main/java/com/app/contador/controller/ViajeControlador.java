@@ -43,15 +43,12 @@ public class ViajeControlador {
     }
 
     private void fillListViajeDto(Viaje viaje, List<ViajeDTO> viajeDTOList) {
-
         ViajeDTO viajeDTO = new ViajeDTO();
-
         viajeDTO.setId(viaje.getId());
         viajeDTO.setRuta(viaje.getRuta());
         viajeDTO.setFecha(viaje.getFechaViaje());
         viajeDTO.setCarro(viaje.getCarro());
         viajeDTO.setConductor(viaje.getConductor());
-
         viajeDTOList.add(viajeDTO);
     }
 

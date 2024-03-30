@@ -30,16 +30,11 @@ public class CarroControlador {
 
     @GetMapping("/carros")
     public List<Carro> listAll() {
-
-    List<Carro> c = repositorio.findAll();
-        System.out.println(repositorio.findAll());
-
-        return repositorio.findAll();
+     return repositorio.findAll();
     }
 
     @PostMapping("/carros")
     public Carro guardarCarro(@RequestBody CarroDTO carroDTO) {
-
         Carro carro = servicioCarro.getCarro(carroDTO);
         return repositorio.save(carro);
     }
@@ -52,7 +47,6 @@ public class CarroControlador {
 
     @PutMapping("/carros/{id}")
     public ResponseEntity<Carro> actualizarEmpleado(@PathVariable Long id , @RequestBody Carro carroDetalles) {
-
         Carro carro = repositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException("Carro no encontrado"));
         carro.setModelo(carroDetalles.getModelo());
         carro.setAnyo(carroDetalles.getAnyo());
