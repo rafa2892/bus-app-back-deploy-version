@@ -10,9 +10,8 @@ import com.app.contador.services.ServicioCarro;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -46,17 +45,16 @@ public class CarroControlador {
     }
 
     @PutMapping("/carros/{id}")
-    public ResponseEntity<Carro> actualizarEmpleado(@PathVariable Long id , @RequestBody Carro carroDetalles) {
-        Carro carro = repositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException("Carro no encontrado"));
-        carro.setModelo(carroDetalles.getModelo());
-        carro.setAnyo(carroDetalles.getAnyo());
-        carro.setConsumo(carroDetalles.getConsumo());
+    public ResponseEntity<Carro> actualizarCarro(@PathVariable Long id , @RequestBody CarroDTO carroDTO) {
+        Carro carro = servicioCarro.getCarro(carroDTO);
+        carro.setId(id);
+        repositorio.save(carro);
         return ResponseEntity.ok(carro);
     }
 
     @DeleteMapping("/carros/{id}")
     public void eliminarCarro(@PathVariable Long id) {
-        Carro carro = (repositorio.findById(id).isPresent())  ? repositorio.findById(id).get() : null;
-        repositorio.delete(carro);
+        Optional<Carro> optionalCarro = repositorio.findById(id);
+        optionalCarro.ifPresent(carro -> repositorio.delete(carro));
     }
 }
