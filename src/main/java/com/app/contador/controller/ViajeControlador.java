@@ -3,10 +3,12 @@ package com.app.contador.controller;
 import com.app.contador.DTO.ViajeDTO;
 import com.app.contador.modelo.Carro;
 import com.app.contador.modelo.Conductor;
+import com.app.contador.modelo.Ruta;
 import com.app.contador.modelo.Viaje;
 import com.app.contador.repositorio.CarrosRepositorio;
 import com.app.contador.repositorio.ConductorRepositorio;
 import com.app.contador.repositorio.ViajeRepositorio;
+import com.app.contador.services.ServicioRutas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,7 +29,6 @@ public class ViajeControlador {
 
     @Autowired
     private ConductorRepositorio conductorRepositorio;
-
 
     @GetMapping("/viajes")
     public List<ViajeDTO> listAll() {

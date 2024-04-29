@@ -3,6 +3,7 @@ package com.app.contador.controller;
 import com.app.contador.modelo.Carro;
 import com.app.contador.modelo.Ruta;
 import com.app.contador.repositorio.RutasRepositorio;
+import com.app.contador.services.ServicioRutas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +18,11 @@ import java.util.List;
 public class RutaControlador {
 
     @Autowired
-    private RutasRepositorio rutasRepositorio;
+    private ServicioRutas rutasSerivicio;
 
     @GetMapping("/rutas")
     public List<Ruta> listAll() {
-        return rutasRepositorio.findAll();
+        return rutasSerivicio.findAll();
     }
 
 
