@@ -8,6 +8,7 @@ import com.app.contador.modelo.Viaje;
 import com.app.contador.repositorio.CarrosRepositorio;
 import com.app.contador.repositorio.ConductorRepositorio;
 import com.app.contador.repositorio.ViajeRepositorio;
+import com.app.contador.services.ServicioEstado;
 import com.app.contador.services.ServicioRutas;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -29,6 +30,7 @@ public class ViajeControlador {
 
     @Autowired
     private ConductorRepositorio conductorRepositorio;
+
 
     @GetMapping("/viajes")
     public List<ViajeDTO> listAll() {

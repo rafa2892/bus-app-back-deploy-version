@@ -32,4 +32,6 @@ public class Viaje {
     @JoinColumn(name = "ruta_id")
     public Ruta ruta;
 
+
+
 }
