@@ -90,7 +90,7 @@ public class CarroControlador {
     public Map<Long,String> tipoHistoriales() {
         Map<Long, String> tiposHistoriales = new HashMap<>(Constantes.getTiposHistoriales()); // Crear una copia del Map original
         tiposHistoriales.remove(1L);
-        return  tiposHistoriales;
+        return tiposHistoriales;
 
     }
     @PostMapping("/carros/guardarHistorial")
