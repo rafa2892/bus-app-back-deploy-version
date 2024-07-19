@@ -1,15 +1,15 @@
 package com.app.contador.controller;
 
+import com.app.contador.DTO.ViajeDTO;
 import com.app.contador.modelo.Carro;
 import com.app.contador.modelo.Ruta;
+import com.app.contador.modelo.Viaje;
 import com.app.contador.repositorio.RutasRepositorio;
 import com.app.contador.services.ServicioRutas;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -25,5 +25,10 @@ public class RutaControlador {
         return rutasSerivicio.findAll();
     }
 
+
+    @PostMapping("/rutas")
+    public void guardarRuta(@RequestBody Ruta ruta) {
+         rutasSerivicio.save(ruta);
+    }
 
 }

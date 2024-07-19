@@ -35,11 +35,17 @@ public class Carro {
     @Column(name = "numeroUnidad", unique = true)
     private Long numeroUnidad;
 
+    @Column(name = "tipo_vehiculo")
+    private String tipoDeVehiculo;
+
 
     @JsonManagedReference
     @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL)
     private List<Imagen> imagenes;
 
+
+    @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL)
+    private List<Historial> registroHistorial;
 
 
 

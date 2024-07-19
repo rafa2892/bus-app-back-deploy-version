@@ -8,4 +8,5 @@ import java.util.List;
 
 public interface ServicioRutas {
 List<Ruta> findAll();
+Ruta save(Ruta ruta);
 }

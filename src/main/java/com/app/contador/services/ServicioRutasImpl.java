@@ -18,4 +18,9 @@ public class ServicioRutasImpl implements ServicioRutas {
         return rutaRepositorio.findAll();
     }
 
+    @Override
+    public Ruta save(Ruta ruta) {
+        return rutaRepositorio.save(ruta);
+    }
+
 }

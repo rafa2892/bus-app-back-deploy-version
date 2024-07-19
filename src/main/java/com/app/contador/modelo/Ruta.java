@@ -22,5 +22,13 @@ public class Ruta {
 
     public String numRutaIdentificativo;
 
+    @ManyToOne
+    @JoinColumn(name = "estado_origen_id")
+    public Estado estadoOrigen;
+
+    @ManyToOne
+    @JoinColumn(name = "estado_destino_id")
+    public Estado estadoDestino;
+
 
 }

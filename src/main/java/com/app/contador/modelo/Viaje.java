@@ -28,6 +28,12 @@ public class Viaje {
     @JoinColumn(name = "conductor_id")
     public Conductor conductor;
 
+    @Column(name = "kilometraje")
+    private Integer kilometraje;
+
+    @Column(name = "horasEspera")
+    private Integer horasEspera;
+
     @ManyToOne
     @JoinColumn(name = "ruta_id")
     public Ruta ruta;

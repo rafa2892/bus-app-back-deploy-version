@@ -28,4 +28,6 @@ public class CarroDTO {
 
     private List<ImagenDTO> imagenes;
 
+    private String tipoDeVehiculo;
+
 }
