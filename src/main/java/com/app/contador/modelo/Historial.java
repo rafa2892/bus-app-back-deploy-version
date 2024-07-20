@@ -7,6 +7,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Getter
@@ -22,7 +23,7 @@ public class Historial {
     @Column(name = "id_tipo")
     private Long idTipo;
 
-    @Column(name = "descripcion")
+    @Column(name = "comentarios")
     private String comentarios;
 
     @Column(name = "descripcion_tipo")
@@ -32,4 +33,13 @@ public class Historial {
     @ManyToOne
     @JoinColumn(name = "carro_id")
     private Carro carro;
+
+    @JoinColumn(name="fecha_alta")
+    private Date fechaAlta;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "usuario_ID")
+    private Usuario usuario;
+
+
 }

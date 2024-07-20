@@ -7,10 +7,13 @@ import com.app.contador.constantes.Constantes;
 import com.app.contador.modelo.Carro;
 import com.app.contador.modelo.Historial;
 import com.app.contador.modelo.Imagen;
+import com.app.contador.modelo.Usuario;
 import com.app.contador.repositorio.CarrosRepositorio;
+import com.app.contador.repositorio.UsuariosRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,6 +24,9 @@ public class ServicioCarroImpl implements ServicioCarro {
 
     @Autowired
     private CarrosRepositorio carrosRepositorio;
+
+    @Autowired
+    private UsuariosRepositorio usuariosRepositorio;
 
     @Override
     public Carro getCarro(CarroDTO carroDTO) {
@@ -69,6 +75,15 @@ public class ServicioCarroImpl implements ServicioCarro {
     @Override
     public void parametrizarHistorial(Historial historial) {
         historial.setDescripcionTipo(Constantes.getTiposHistoriales().get(historial.getIdTipo()));
-    }
+        historial.setFechaAlta(new Date());
 
+        //Obtenemos el Usuario por defecto
+        historial.setUsuario(usuariosRepositorio.getUsuarioById(1L));
+
+        if (historial.getComentarios() == null ||
+            historial.getComentarios().isEmpty() ||
+            historial.getComentarios().isBlank()) {
+                     historial.setComentarios("NO COMENTARIOS DISPONIBLE");
+        }
+    }
 }
