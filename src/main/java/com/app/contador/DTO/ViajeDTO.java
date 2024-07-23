@@ -19,6 +19,7 @@ public class ViajeDTO {
     private Carro carro;
     private Integer kilometraje;
     private Integer horasEspera;
+    private String comentarios;
 
     public ViajeDTO() {
     }

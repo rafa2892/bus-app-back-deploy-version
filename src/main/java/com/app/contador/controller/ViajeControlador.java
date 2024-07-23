@@ -73,10 +73,17 @@ public class ViajeControlador {
         if(viajeGuardado.getId() != null) {
             Historial historial = new Historial();
             historial.setIdTipo(Constantes.REGISTRO_VIAJE_ID);
-            historial.setComentarios(Constantes.REGISTRO_VIAJE);
             historial.setCarro(viaje.getCarro());
-            this.servicioCarro.parametrizarHistorial(historial);
-            this.servicioCarro.save(historial);
+
+            if (viajeDTO.getComentarios() != null)
+             historial.setComentarios(viajeDTO.getComentarios());
+
+            else
+                historial.setComentarios(Constantes.REGISTRO_VIAJE);
+
+
+             this.servicioCarro.parametrizarHistorial(historial);
+             this.servicioCarro.save(historial);
         }
 
         return viajeGuardado;
