@@ -25,13 +25,9 @@ public class SecurityConfig {
 //                .csrf(AbstractHttpConfigurer::disable)  // Desactiva CSRF para simplificar ejemplos. Ajusta según sea necesario.
                 .authorizeHttpRequests((auth) ->
                         auth
-
                                 .requestMatchers("api/v1/prueba").permitAll()
-                                .requestMatchers("api/v1/carros").authenticated()
+                                .requestMatchers("api/v1/carros").hasRole("ADMIN")
                                 .anyRequest().authenticated()
-
-
-//                                .requestMatchers("api/v1/carros").permitAll()
 
                 );
 
