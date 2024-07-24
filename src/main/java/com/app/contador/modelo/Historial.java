@@ -6,9 +6,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 @Getter
 @Setter
@@ -39,7 +37,7 @@ public class Historial {
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_ID")
-    private Usuario usuario;
+    private UserLogin userLogin;
 
 
 }

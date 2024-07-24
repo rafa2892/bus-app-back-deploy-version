@@ -8,7 +8,7 @@ import lombok.Setter;
 @Table(name = "usuario")
 @Getter
 @Setter
-public class Usuario {
+public class UserLogin {
 
 
     @Id
@@ -19,8 +19,9 @@ public class Usuario {
     @Column(name = "usuario", nullable = false)
     private String usu;
 
-    public Usuario() {
-        this.usu = "ADMIN";
-    }
+    @Column(name = "rol", nullable = false)
+    private String rol;
 
+    @Column(name = "pass", nullable = false)
+    private String pass;
 }

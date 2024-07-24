@@ -1,8 +1,7 @@
 package com.app.contador.controller;
 
-import com.app.contador.modelo.Carro;
 import com.app.contador.modelo.Estado;
-import com.app.contador.services.ServicioEstado;
+import com.app.contador.services.EstadoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,11 +16,11 @@ import java.util.List;
 public class EstadoControlador {
 
     @Autowired
-    private ServicioEstado servicioEstado;
+    private EstadoServicio estadoServicio;
 
     @GetMapping("/estados")
     public List<Estado> listAll() {
-        return servicioEstado.findAll();
+        return estadoServicio.findAll();
     }
 
 }

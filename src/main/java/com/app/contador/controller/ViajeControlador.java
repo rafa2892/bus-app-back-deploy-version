@@ -4,11 +4,8 @@ import com.app.contador.DTO.ViajeDTO;
 import com.app.contador.constantes.Constantes;
 import com.app.contador.modelo.*;
 import com.app.contador.repositorio.CarrosRepositorio;
-import com.app.contador.repositorio.ConductorRepositorio;
 import com.app.contador.repositorio.ViajeRepositorio;
-import com.app.contador.services.ServicioCarro;
-import com.app.contador.services.ServicioEstado;
-import com.app.contador.services.ServicioRutas;
+import com.app.contador.services.CarroService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,7 +25,7 @@ public class ViajeControlador {
     private CarrosRepositorio repositorio;
 
     @Autowired
-    private ServicioCarro servicioCarro;
+    private CarroService carroService;
 
 
     @GetMapping("/viajes")
@@ -82,8 +79,8 @@ public class ViajeControlador {
                 historial.setComentarios(Constantes.REGISTRO_VIAJE);
 
 
-             this.servicioCarro.parametrizarHistorial(historial);
-             this.servicioCarro.save(historial);
+             this.carroService.parametrizarHistorial(historial);
+             this.carroService.save(historial);
         }
 
         return viajeGuardado;

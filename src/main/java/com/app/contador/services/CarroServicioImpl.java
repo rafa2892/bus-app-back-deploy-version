@@ -7,19 +7,16 @@ import com.app.contador.constantes.Constantes;
 import com.app.contador.modelo.Carro;
 import com.app.contador.modelo.Historial;
 import com.app.contador.modelo.Imagen;
-import com.app.contador.modelo.Usuario;
 import com.app.contador.repositorio.CarrosRepositorio;
 import com.app.contador.repositorio.UsuariosRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
-public class ServicioCarroImpl implements ServicioCarro {
+public class CarroServicioImpl implements CarroService {
 
 
     @Autowired
@@ -78,7 +75,7 @@ public class ServicioCarroImpl implements ServicioCarro {
         historial.setFechaAlta(new Date());
 
         //Obtenemos el Usuario por defecto
-        historial.setUsuario(usuariosRepositorio.getUsuarioById(1L));
+        historial.setUserLogin(usuariosRepositorio.getUsuarioById(1L));
 
         if (historial.getComentarios() == null ||
             historial.getComentarios().isEmpty() ||

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ServicioRutasImpl implements ServicioRutas {
+public class RutasServicioImpl implements RutasServicio {
 
     @Autowired
     private RutasRepositorio rutaRepositorio;

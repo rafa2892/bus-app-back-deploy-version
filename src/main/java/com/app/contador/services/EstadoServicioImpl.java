@@ -7,7 +7,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 @Service
-public class ServicioEstadoImpl implements ServicioEstado{
+public class EstadoServicioImpl implements EstadoServicio {
 
     @Autowired
     EstadosRepositorio estadosRepositorio;

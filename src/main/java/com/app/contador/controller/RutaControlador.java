@@ -1,15 +1,10 @@
 package com.app.contador.controller;
 
-import com.app.contador.DTO.ViajeDTO;
-import com.app.contador.modelo.Carro;
 import com.app.contador.modelo.Ruta;
-import com.app.contador.modelo.Viaje;
-import com.app.contador.repositorio.RutasRepositorio;
-import com.app.contador.services.ServicioRutas;
+import com.app.contador.services.RutasServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Date;
 import java.util.List;
 
 @RestController
@@ -18,7 +13,7 @@ import java.util.List;
 public class RutaControlador {
 
     @Autowired
-    private ServicioRutas rutasSerivicio;
+    private RutasServicio rutasSerivicio;
 
     @GetMapping("/rutas")
     public List<Ruta> listAll() {

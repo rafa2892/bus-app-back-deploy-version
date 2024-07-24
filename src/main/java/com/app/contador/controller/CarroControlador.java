@@ -7,52 +7,64 @@ import com.app.contador.modelo.Historial;
 import com.app.contador.modelo.TipoVehiculo;
 import com.app.contador.repositorio.CarrosRepositorio;
 import com.app.contador.repositorio.ViajeRepositorio;
-import com.app.contador.services.ServicioCarro;
-import com.app.contador.services.ServicioTipoVehiculo;
+import com.app.contador.services.CarroService;
+import com.app.contador.services.TipoVehiculoServicio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+//import java.util.logging.Logger;
+
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @RestController
 @RequestMapping("/api/v1/")
 @CrossOrigin
 public class CarroControlador {
 
+    private static final Logger logger = LogManager.getLogger(CarroControlador.class.getName());
     @Autowired
     private CarrosRepositorio carrosRepositorio;
 
-    @Autowired
-    private ViajeRepositorio viajeRepositorio;
 
     @Autowired
-    private ServicioCarro servicioCarro;
+    private CarroService carroService;
 
     @Autowired
-    private ServicioTipoVehiculo servicioTipoVehiculo;
+    private TipoVehiculoServicio tipoVehiculoServicio;
 
-    /*
-    * Mapa que guarda los tipos de historiales
-    * */
-    private HashMap<Integer, String> map = new HashMap<>();
 
     @GetMapping("/carros")
     public List<Carro> listAll() {
      return carrosRepositorio.findAll();
     }
 
+    @GetMapping("/prueba")
+    public ResponseEntity<?> mensaje() {
+
+        var auth = SecurityContextHolder.getContext().getAuthentication();
+        logger.info("Datos del usuario : {}",auth.getPrincipal());
+
+        Map<String,String>mensaje = new HashMap<>();
+        mensaje.put("contenido","hola venezuela");
+        return ResponseEntity.ok(mensaje);
+    }
+
     @GetMapping("/carros/tipoVehiculos")
     public List<TipoVehiculo> listAllTipoVehiculos() {
-        return servicioTipoVehiculo.findAll();
+        return tipoVehiculoServicio.findAll();
     }
 
     @PostMapping("/carros")
     public Carro guardarCarro(@RequestBody CarroDTO carroDTO) {
-        Carro carro = servicioCarro.getCarro(carroDTO);
+        Carro carro = carroService.getCarro(carroDTO);
         Historial historial = new Historial();
         historial.setDescripcionTipo(Constantes.REGISTRO_VIAJE);
         historial.setId(Constantes.REGISTRO_VIAJE_ID);
@@ -74,7 +86,7 @@ public class CarroControlador {
 
     @PutMapping("/carros/{id}")
     public ResponseEntity<Carro> actualizarCarro(@PathVariable Long id , @RequestBody CarroDTO carroDTO) {
-        Carro carro = servicioCarro.getCarro(carroDTO);
+        Carro carro = carroService.getCarro(carroDTO);
         carro.setId(id);
         carrosRepositorio.save(carro);
         return ResponseEntity.ok(carro);
@@ -95,7 +107,7 @@ public class CarroControlador {
     }
     @PostMapping("/carros/guardarHistorial")
     public Historial registrarHistorial(@RequestBody Historial historial) {
-        this.servicioCarro.parametrizarHistorial(historial);
-        return this.servicioCarro.save(historial);
+        this.carroService.parametrizarHistorial(historial);
+        return this.carroService.save(historial);
     }
 }

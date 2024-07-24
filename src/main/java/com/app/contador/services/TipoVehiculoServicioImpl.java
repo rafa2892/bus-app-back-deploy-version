@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-public class ServicioTipoVehiculoImpl implements ServicioTipoVehiculo{
+public class TipoVehiculoServicioImpl implements TipoVehiculoServicio {
 
     @Autowired
     TipoVehiculoRepositorio tipoVehiculoRepositorio;
