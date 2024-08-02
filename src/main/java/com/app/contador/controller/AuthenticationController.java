@@ -29,14 +29,7 @@ public class AuthenticationController {
     UserDetailsService usuarioDetailsService;
     private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
 
-    @PostMapping("/publico/prueba")
-    public void prueba() {
-
-        System.out.println("ERROR");
-
-    }
-
-    @PostMapping("/publico/authenticate")
+    @PostMapping("/login")
     public ResponseEntity<TokenInfo> authenticate(@RequestBody AuthenticationReq authenticationReq) {
         logger.info("Autenticando al usuario {}", authenticationReq.getUsuario());
 
@@ -44,11 +37,8 @@ public class AuthenticationController {
                 new UsernamePasswordAuthenticationToken(authenticationReq.getUsuario(),
                         authenticationReq.getClave()));
 
-        final UserDetails userDetails = usuarioDetailsService.loadUserByUsername(
-                authenticationReq.getUsuario());
-
+        final UserDetails userDetails = usuarioDetailsService.loadUserByUsername(authenticationReq.getUsuario());
         final String jwt = jwtUtilService.generateToken(userDetails);
-
         return ResponseEntity.ok(new TokenInfo(jwt));
     }
 }
