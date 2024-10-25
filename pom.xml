@@ -8,11 +8,11 @@
         <version>3.2.2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.app.contador</groupId>
-    <artifactId>contador_app</artifactId>
+    <groupId>com.bus.app</groupId>
+    <artifactId>bus-app</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>contador_app</name>
-    <description>contador_app</description>
+    <name>bus_app</name>
+    <description>bus_app</description>
     <properties>
         <java.version>17</java.version>
     </properties>
