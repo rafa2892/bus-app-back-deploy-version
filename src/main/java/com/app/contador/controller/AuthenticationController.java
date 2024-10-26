@@ -41,4 +41,9 @@ public class AuthenticationController {
         final String jwt = jwtUtilService.generateToken(userDetails);
         return ResponseEntity.ok(new TokenInfo(jwt));
     }
+
+    @GetMapping("/authenticationTest")
+    public ResponseEntity<String> prueba() {
+        return ResponseEntity.ok("Estas autenticado correctamente");
+    }
 }
