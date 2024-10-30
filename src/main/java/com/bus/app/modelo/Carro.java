@@ -5,15 +5,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
 import java.util.List;
 
-@Entity
-@Table(name= "carros")
 @Setter
 @Getter
+@Entity
+@Table(name= "carros")
 public class Carro {
-
-
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,14 +34,33 @@ public class Carro {
     @Column(name = "tipo_vehiculo")
     private String tipoDeVehiculo;
 
-
     @JsonManagedReference
     @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL)
     private List<Imagen> imagenes;
 
-
     @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL)
     private List<Historial> registroHistorial;
+
+    private Date ultimoCambioDeAceite;
+
+    private Date siguienteCambioAceite;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "titulo_ID")
+    private TituloUnidad titulo;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "poliza_ID")
+    private PolizaUnidad poliza;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "bateria_ID")
+    private Bateria bateria;
+
+
+
+
+
 
 
 

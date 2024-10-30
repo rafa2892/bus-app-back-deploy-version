@@ -1,6 +1,5 @@
 package com.bus.app.modelo;
 
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -8,19 +7,18 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name="conductores")
-public class Conductor {
-
+@Table(name = "titulo_unidad")
+public class TituloUnidad {
     @Id
+    @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
     private String nombre;
 
     private String apellido;
 
-    private String dni;
-
+    private String descripcion;
 
 
 

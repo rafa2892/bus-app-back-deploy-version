@@ -36,6 +36,8 @@ public class Viaje {
     @JoinColumn(name = "ruta_id")
     public Ruta ruta;
 
-
+    @ManyToOne
+    @JoinColumn(name = "empresa_servicio_ID")
+    public Empresa empresaServicio;
 
 }

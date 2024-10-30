@@ -6,3 +6,4 @@ import org.springframework.stereotype.Repository;
 
 public interface ConductorRepositorio extends JpaRepository<Conductor,Long> {
 }
+
