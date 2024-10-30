@@ -27,10 +27,11 @@ public class SecurityConfig {
                 .authorizeHttpRequests((auth) ->
                         auth
                                 .requestMatchers("api/v1/login").permitAll()
+                                .requestMatchers("api/v1/refresh").permitAll()
 //                                .requestMatchers("api/v1/publico/**").permitAll()
                              /*   .requestMatchers("api/v1/prueba").permitAll()*/
-//                                .anyRequest().permitAll()
-                                  .anyRequest().authenticated()
+                                .anyRequest().permitAll()
+//                                  .anyRequest().authenticated()
                 )
                .cors(withDefaults())
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class)

@@ -17,7 +17,8 @@ public class CorsConfig {
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowCredentials(true); // Permitir credenciales
         config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:3000"));
-        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization")); // Añadir las cabeceras permitidas
+//        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
+        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization", "Cookie", "Set-Cookie"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Añadir OPTIONS para solicitudes preflight
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
