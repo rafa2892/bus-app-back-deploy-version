@@ -26,7 +26,6 @@ public class Historial {
 
     @Column(name = "descripcion_tipo")
     private String descripcionTipo;
-
     @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "carro_id")
@@ -39,5 +38,6 @@ public class Historial {
     @JoinColumn(name = "usuario_ID")
     private UserLogin userLogin;
 
+    private String dsHistorial;
 
 }
