@@ -9,6 +9,7 @@ import com.bus.app.modelo.Historial;
 import com.bus.app.modelo.Imagen;
 import com.bus.app.repositorio.CarrosRepositorio;
 import com.bus.app.repositorio.UsuariosRepositorio;
+import com.bus.app.security.BusAppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -75,12 +76,15 @@ public class CarroServicioImpl implements CarroService {
         historial.setFechaAlta(new Date());
 
         //Obtenemos el Usuario por defecto
-        historial.setUserLogin(usuariosRepositorio.getUsuarioById(1L));
+//        historial.setUserLogin(usuariosRepositorio.getUsuarioById(2L));
+
+         String user = BusAppUtils.getUserName();
+         historial.setUserLogin(usuariosRepositorio.findByUsu(user));
 
         if (historial.getComentarios() == null ||
             historial.getComentarios().isEmpty() ||
             historial.getComentarios().isBlank()) {
-                     historial.setComentarios("NO COMENTARIOS DISPONIBLE");
+            historial.setComentarios("NO COMENTARIOS DISPONIBLE");
         }
     }
 }
