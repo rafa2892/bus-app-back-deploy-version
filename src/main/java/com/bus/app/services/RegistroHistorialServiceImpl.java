@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
+
 @Service
 public class RegistroHistorialServiceImpl implements RegistroHistorialService{
 
@@ -16,5 +18,10 @@ public class RegistroHistorialServiceImpl implements RegistroHistorialService{
   @Override
   public List<Historial> findAll() {
     return registroHistorialRepositorio.findAll();
+  }
+
+  @Override
+  public Optional<Historial> findById(Long id) {
+    return registroHistorialRepositorio.findById(id);
   }
 }

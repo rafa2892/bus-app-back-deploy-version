@@ -31,15 +31,10 @@ public class CarroControlador {
     private static final Logger logger = LogManager.getLogger(CarroControlador.class.getName());
     @Autowired
     private CarrosRepositorio carrosRepositorio;
-
-
     @Autowired
     private CarroService carroService;
-
     @Autowired
     private TipoVehiculoServicio tipoVehiculoServicio;
-
-
     @GetMapping("/carros")
     public List<Carro> listAll() {
      return carrosRepositorio.findAll();
@@ -78,7 +73,7 @@ public class CarroControlador {
 
 
     @GetMapping("/carros/{id}")
-    public ResponseEntity<Carro> obtenerCarroPorid(@PathVariable Long id) {
+    public ResponseEntity<Carro> findByid(@PathVariable Long id) {
         Carro carro = carrosRepositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException("Carro no encontrado"));
         return ResponseEntity.ok(carro);
     }
