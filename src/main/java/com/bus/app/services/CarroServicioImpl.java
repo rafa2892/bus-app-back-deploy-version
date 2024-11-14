@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class CarroServicioImpl implements CarroService {
@@ -71,20 +72,7 @@ public class CarroServicioImpl implements CarroService {
     }
 
     @Override
-    public void parametrizarHistorial(Historial historial) {
-        historial.setDescripcionTipo(Constantes.getTiposHistoriales().get(historial.getIdTipo()));
-        historial.setFechaAlta(new Date());
-
-        //Obtenemos el Usuario por defecto
-//        historial.setUserLogin(usuariosRepositorio.getUsuarioById(2L));
-
-         String user = BusAppUtils.getUserName();
-         historial.setUserLogin(usuariosRepositorio.findByUsu(user));
-
-        if (historial.getComentarios() == null ||
-            historial.getComentarios().isEmpty() ||
-            historial.getComentarios().isBlank()) {
-            historial.setComentarios("NO COMENTARIOS DISPONIBLE");
-        }
+    public Optional<Carro> findByid(Long id) {
+        return this.carrosRepositorio.findById(id);
     }
 }

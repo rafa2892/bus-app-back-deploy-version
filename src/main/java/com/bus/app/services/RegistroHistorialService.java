@@ -7,6 +7,7 @@ import java.util.Optional;
 
 public interface RegistroHistorialService {
    List<Historial> findAll();
-
    Optional<Historial> findById(Long id);
+   Historial save(Historial historial);
+   void parametrizarHistorial(Historial historial);
 }

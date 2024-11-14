@@ -5,6 +5,7 @@ import com.bus.app.excepciones.ResourceNotFoundException;
 import com.bus.app.mappers.HistorialMapper;
 import com.bus.app.modelo.Carro;
 import com.bus.app.modelo.Historial;
+import com.bus.app.services.CarroService;
 import com.bus.app.services.RegistroHistorialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +23,9 @@ public class HistorialController {
     @Autowired
     private RegistroHistorialService registroHistorialService;
 
+    @Autowired
+    private CarroService carroService;
+
     @GetMapping("/historial")
     public List<Historial> listAll() {
         return registroHistorialService.findAll();
@@ -29,9 +33,7 @@ public class HistorialController {
 
     @GetMapping("/historial/{id}")
     public ResponseEntity<HistorialDTO> findById(@PathVariable Long id) {
-
         Optional<Historial> historial = registroHistorialService.findById(id);
-
         if(historial.isPresent()) {
             return historial.map(h -> ResponseEntity.ok(HistorialMapper.toDto(h)))
                     .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
@@ -41,4 +43,12 @@ public class HistorialController {
         }
     }
 
+    @PostMapping("/historial")
+    public Historial registrarHistorial(@RequestBody HistorialDTO historialDTO) {
+        Historial historial = HistorialMapper.toEntity(historialDTO);
+        this.registroHistorialService.parametrizarHistorial(historial);
+        Optional<Carro> carroBD = carroService.findByid(historial.getCarro().getId());
+        carroBD.ifPresent(historial::setCarro);
+        return this.registroHistorialService.save(historial);
+    }
 }

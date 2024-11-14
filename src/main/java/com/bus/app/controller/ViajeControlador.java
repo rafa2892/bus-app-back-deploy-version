@@ -8,6 +8,7 @@ import com.bus.app.repositorio.ViajeRepositorio;
 import com.bus.app.services.CarroService;
 import com.bus.app.modelo.Historial;
 import com.bus.app.modelo.Viaje;
+import com.bus.app.services.RegistroHistorialService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -28,6 +29,9 @@ public class ViajeControlador {
 
     @Autowired
     private CarroService carroService;
+
+    @Autowired
+    private RegistroHistorialService registroHistorialService;
 
 
     @GetMapping("/viajes")
@@ -74,14 +78,14 @@ public class ViajeControlador {
             historial.setIdTipo(Constantes.REGISTRO_VIAJE_ID);
             historial.setCarro(viaje.getCarro());
 
-            if (viajeDTO.getComentarios() != null)
+            if (viajeDTO.getComentarios() != null) {
              historial.setComentarios(viajeDTO.getComentarios());
-
-            else
+            }
+            else{
                 historial.setComentarios(Constantes.REGISTRO_VIAJE);
+            }
 
-
-             this.carroService.parametrizarHistorial(historial);
+             this.registroHistorialService.parametrizarHistorial(historial);
              this.carroService.save(historial);
         }
 

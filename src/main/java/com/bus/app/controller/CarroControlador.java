@@ -1,7 +1,9 @@
 package com.bus.app.controller;
 import com.bus.app.DTO.CarroDTO;
+import com.bus.app.DTO.HistorialDTO;
 import com.bus.app.constantes.Constantes;
 import com.bus.app.excepciones.ResourceNotFoundException;
+import com.bus.app.mappers.HistorialMapper;
 import com.bus.app.modelo.Carro;
 import com.bus.app.modelo.Historial;
 import com.bus.app.modelo.TipoVehiculo;
@@ -96,10 +98,5 @@ public class CarroControlador {
     public Map<Long,String> tipoHistoriales() {
         return new HashMap<>(Constantes.getTiposHistoriales());
 
-    }
-    @PostMapping("/carros/guardarHistorial")
-    public Historial registrarHistorial(@RequestBody Historial historial) {
-        this.carroService.parametrizarHistorial(historial);
-        return this.carroService.save(historial);
     }
 }
