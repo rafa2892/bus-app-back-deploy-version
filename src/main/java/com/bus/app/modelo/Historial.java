@@ -26,8 +26,9 @@ public class Historial {
 
     @Column(name = "descripcion_tipo")
     private String descripcionTipo;
+
     @JsonBackReference
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "carro_id")
     private Carro carro;
 

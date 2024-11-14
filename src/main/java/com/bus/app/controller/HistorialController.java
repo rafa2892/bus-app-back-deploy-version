@@ -1,6 +1,8 @@
 package com.bus.app.controller;
 
+import com.bus.app.DTO.HistorialDTO;
 import com.bus.app.excepciones.ResourceNotFoundException;
+import com.bus.app.mappers.HistorialMapper;
 import com.bus.app.modelo.Carro;
 import com.bus.app.modelo.Historial;
 import com.bus.app.services.RegistroHistorialService;
@@ -26,10 +28,13 @@ public class HistorialController {
     }
 
     @GetMapping("/historial/{id}")
-    public ResponseEntity<Historial> findById(@PathVariable Long id) {
+    public ResponseEntity<HistorialDTO> findById(@PathVariable Long id) {
+
         Optional<Historial> historial = registroHistorialService.findById(id);
+
         if(historial.isPresent()) {
-            return ResponseEntity.ok(historial.get());
+            return historial.map(h -> ResponseEntity.ok(HistorialMapper.toDto(h)))
+                    .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND)
                     .body(null);
