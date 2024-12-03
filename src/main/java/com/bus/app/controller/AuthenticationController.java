@@ -47,6 +47,7 @@ public class AuthenticationController {
                             authenticationReq.getUsuario(),
                             authenticationReq.getClave()));
 
+
             final UserDetails userDetails = usuarioDetailsService.loadUserByUsername(authenticationReq.getUsuario());
             final String jwt = jwtUtilService.generateToken(userDetails);
             final String refreshToken = jwtUtilService.generateRefreshToken(userDetails);

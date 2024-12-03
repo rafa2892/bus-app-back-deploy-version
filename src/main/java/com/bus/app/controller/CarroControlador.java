@@ -42,17 +42,6 @@ public class CarroControlador {
      return carrosRepositorio.findAll();
     }
 
-    @GetMapping("/prueba")
-    public ResponseEntity<?> mensaje() {
-
-        var auth = SecurityContextHolder.getContext().getAuthentication();
-        logger.info("Datos del usuario : {}",auth.getPrincipal());
-
-        Map<String,String>mensaje = new HashMap<>();
-        mensaje.put("contenido","hola venezuela");
-        return ResponseEntity.ok(mensaje);
-    }
-
     @GetMapping("/carros/tipoVehiculos")
     public List<TipoVehiculo> listAllTipoVehiculos() {
         return tipoVehiculoServicio.findAll();

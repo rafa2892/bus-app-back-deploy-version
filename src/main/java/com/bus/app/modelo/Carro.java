@@ -28,7 +28,7 @@ public class Carro {
     @Column(name = "consumo")
     private Long consumo;
 
-    @Column(name = "numeroUnidad", unique = true)
+    @Column(name = "numero_unidad", unique = true)
     private Long numeroUnidad;
 
     @Column(name = "tipo_vehiculo")
