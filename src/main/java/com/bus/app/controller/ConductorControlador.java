@@ -25,7 +25,7 @@ public class ConductorControlador {
     }
 
     @GetMapping("/conductores/{id}")
-    public ResponseEntity<Conductor>fingById(@PathVariable Long id){
+    public ResponseEntity<Conductor>findById(@PathVariable Long id){
         Optional<Conductor> conductor = conductorService.findById(id);
         if(conductor.isEmpty()){
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
