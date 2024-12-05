@@ -25,6 +25,11 @@ public class Conductor {
 
     private Date fechaNacimiento;
 
+    private String dniTipo;
+
+    private Date fechaAlta;
+
+    private String dadoAltaPor;
 
 
 
