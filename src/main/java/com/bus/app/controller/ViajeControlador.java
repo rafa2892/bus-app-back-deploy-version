@@ -10,14 +10,16 @@ import com.bus.app.modelo.Historial;
 import com.bus.app.modelo.Viaje;
 import com.bus.app.services.RegistroHistorialService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/viajes")
 @CrossOrigin
 public class ViajeControlador {
 
@@ -34,20 +36,50 @@ public class ViajeControlador {
     private RegistroHistorialService registroHistorialService;
 
 
-    @GetMapping("/viajes")
+    @GetMapping
     public List<ViajeDTO> listAll() {
 
         List<Viaje> listaViajes=  viajeRepositorio.findAll();
         List<ViajeDTO> viajeDTOList = new ArrayList<>();
 
         for (Viaje viaje: listaViajes) {
-            fillListViajeDto(viaje, viajeDTOList);
+            viajeDTOList.add(fillListViajeDto(viaje));
         }
-
         return viajeDTOList;
     }
 
-    private void fillListViajeDto(Viaje viaje, List<ViajeDTO> viajeDTOList) {
+    @GetMapping("conductor/{id}")
+    public ResponseEntity<List<ViajeDTO>> listByConductorId(@PathVariable Long id) {
+
+        List<Viaje> listaViajes=  viajeRepositorio.findByConductorId(id);
+        List<ViajeDTO> viajeDTOList = new ArrayList<>();
+
+        for (Viaje viaje: listaViajes) {
+            viajeDTOList.add(fillListViajeDto(viaje));
+        }
+
+        if(viajeDTOList.isEmpty()){
+            return ResponseEntity.notFound().build();
+        }
+        return ResponseEntity.ok(viajeDTOList);
+    }
+
+    @GetMapping("/{id}")
+    public ViajeDTO findbyId(@PathVariable Long id) {
+
+        Optional<Viaje> viaje = viajeRepositorio.findById(id);
+
+        if(viaje.isEmpty()){
+            return null;
+        }
+        else {
+            Viaje viajeResult = viaje.get();
+            return fillListViajeDto(viajeResult);
+        }
+    }
+
+
+    private ViajeDTO fillListViajeDto(Viaje viaje) {
         ViajeDTO viajeDTO = new ViajeDTO();
         viajeDTO.setId(viaje.getId());
         viajeDTO.setRuta(viaje.getRuta());
@@ -56,7 +88,7 @@ public class ViajeControlador {
         viajeDTO.setConductor(viaje.getConductor());
         viajeDTO.setKilometraje(viaje.getKilometraje());
         viajeDTO.setHorasEspera(viaje.getHorasEspera());
-        viajeDTOList.add(viajeDTO);
+        return viajeDTO;
     }
 
     @PostMapping("/viajes")

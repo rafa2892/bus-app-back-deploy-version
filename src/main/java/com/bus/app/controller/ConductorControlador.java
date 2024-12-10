@@ -1,6 +1,7 @@
 package com.bus.app.controller;
 import com.bus.app.modelo.Conductor;
 import com.bus.app.repositorio.ConductorRepositorio;
+import com.bus.app.repositorio.ViajeRepositorio;
 import com.bus.app.services.ConductorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,19 +13,22 @@ import java.util.Optional;
 
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/conductores")
 @CrossOrigin
 public class ConductorControlador {
 
     @Autowired
     private ConductorService conductorService;
 
-    @GetMapping("/conductores")
+    @Autowired
+    private ViajeRepositorio viajeRepositorio;
+
+    @GetMapping
     public List<Conductor> listAll() {
         return conductorService.findAll();
     }
 
-    @GetMapping("/conductores/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Conductor>findById(@PathVariable Long id){
         Optional<Conductor> conductor = conductorService.findById(id);
         if(conductor.isEmpty()){
@@ -41,7 +45,7 @@ public class ConductorControlador {
      * @param conductor El objeto de tipo {@link Conductor} a guardar.
      * @return La respuesta HTTP con el conductor guardado o un error si la operación falla.
      */
-    @PostMapping("/conductores")
+    @PostMapping()
     public ResponseEntity<Conductor>saveConductor(@RequestBody Conductor conductor) {
 
         Conductor conductorGuardado = conductorService.save(conductor);
@@ -60,7 +64,7 @@ public class ConductorControlador {
      * @param id El ID del conductor que se va a eliminar.
      * @return Respuesta HTTP con mensaje de éxito o error.
      */
-    @DeleteMapping("/conductores/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteConductor(@PathVariable Long id) {
         try {
             // Intentamos eliminar al conductor por su ID
@@ -83,7 +87,7 @@ public class ConductorControlador {
      * @param conductor El objeto {@link Conductor} con los datos a actualizar.
      * @return Respuesta HTTP con el conductor actualizado o error.
      */
-    @PutMapping("/conductores/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Conductor> updateConductor(@RequestBody Conductor conductor) {
         // Guardamos el conductor actualizado
         Conductor conductorGuardado = conductorService.save(conductor);
@@ -98,5 +102,9 @@ public class ConductorControlador {
         }
     }
 
+    @GetMapping("/viaje-counter/{id}")
+    public Long countByConductorId(@PathVariable Long id) {
+        return viajeRepositorio.countByConductorId(id);
+    }
 
 }
