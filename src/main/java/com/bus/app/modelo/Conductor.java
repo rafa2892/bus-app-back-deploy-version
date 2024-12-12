@@ -18,19 +18,13 @@ public class Conductor {
     public Long id;
 
     private String nombre;
-
     private String apellido;
-
     private String dni;
-
     private Date fechaNacimiento;
-
     private String dniTipo;
-
     private Date fechaAlta;
-
     private String dadoAltaPor;
-
+    private Long kmRegistrados;
 
 
 }

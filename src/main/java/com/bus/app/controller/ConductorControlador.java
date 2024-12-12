@@ -48,6 +48,7 @@ public class ConductorControlador {
     @PostMapping()
     public ResponseEntity<Conductor>saveConductor(@RequestBody Conductor conductor) {
 
+
         Conductor conductorGuardado = conductorService.save(conductor);
 
         if(conductorGuardado.getId() == null || conductorGuardado.getId() == 0) {
@@ -88,20 +89,16 @@ public class ConductorControlador {
      * @return Respuesta HTTP con el conductor actualizado o error.
      */
     @PutMapping("/{id}")
-    public ResponseEntity<Conductor> updateConductor(@RequestBody Conductor conductor) {
-        // Guardamos el conductor actualizado
-        Conductor conductorGuardado = conductorService.save(conductor);
+    public ResponseEntity<Conductor> updateConductor(@PathVariable Long id, @RequestBody Conductor conductor) {
 
-        // Verificamos si el conductor se guardó correctamente
-        if (conductorGuardado.getId() == null || conductorGuardado.getId() == 0) {
-            // Si hubo un error en la creación o actualización, retornamos un error 400
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        } else {
-            // Si la actualización fue exitosa, retornamos el conductor con estado 201
-            return ResponseEntity.status(HttpStatus.CREATED).body(conductorGuardado);
-        }
+     return ResponseEntity.ok().build();
     }
-
+    /**
+     * Contabiliza la cantidad de viajes asociados a un conductor específico.
+     *
+     * @param id El identificador del conductor cuyo número de viajes se desea contar.
+     * @return Un valor de tipo Long que representa la cantidad de viajes registrados para el conductor con el ID proporcionado.
+     */
     @GetMapping("/viaje-counter/{id}")
     public Long countByConductorId(@PathVariable Long id) {
         return viajeRepositorio.countByConductorId(id);

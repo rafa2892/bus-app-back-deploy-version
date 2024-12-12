@@ -2,6 +2,7 @@ package com.bus.app.services;
 
 import com.bus.app.modelo.Conductor;
 import com.bus.app.repositorio.ConductorRepositorio;
+import com.bus.app.security.BusAppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -27,6 +28,7 @@ public class ConductorServiceImpl implements ConductorService {
     public Conductor save(Conductor conductor) {
         // Asignamos la fecha de alta
         conductor.setFechaAlta(new Date());
+        conductor.setDadoAltaPor(BusAppUtils.getUserName());
 
         // Guardamos el conductor
         return conductorRepositorio.save(conductor);
