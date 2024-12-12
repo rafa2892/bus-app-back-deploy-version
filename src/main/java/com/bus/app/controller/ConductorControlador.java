@@ -48,7 +48,6 @@ public class ConductorControlador {
     @PostMapping()
     public ResponseEntity<Conductor>saveConductor(@RequestBody Conductor conductor) {
 
-
         Conductor conductorGuardado = conductorService.save(conductor);
 
         if(conductorGuardado.getId() == null || conductorGuardado.getId() == 0) {
@@ -76,7 +75,6 @@ public class ConductorControlador {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al eliminar el conductor");
         }
     }
-
     /**
      * Actualiza la información de un conductor.
      *
@@ -84,14 +82,20 @@ public class ConductorControlador {
      * se recibe en el cuerpo de la solicitud y se guarda en la base de datos. Si el conductor se guarda correctamente,
      * se retorna un estado 201 (Created) junto con el objeto del conductor actualizado. Si hay un problema en el proceso
      * de guardado, se retorna un estado 400 (Bad Request).
-     *
-     * @param conductor El objeto {@link Conductor} con los datos a actualizar.
-     * @return Respuesta HTTP con el conductor actualizado o error.
+//     *
+//     * @param  El objeto {@link Conductor} con los datos a actualizar.
+//     * @return Respuesta HTTP con el conductor actualizado o error.
      */
     @PutMapping("/{id}")
     public ResponseEntity<Conductor> updateConductor(@PathVariable Long id, @RequestBody Conductor conductor) {
 
-     return ResponseEntity.ok().build();
+        Conductor conductorActualizado = conductorService.save(conductor);
+        if (conductorActualizado == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        } else {
+            return ResponseEntity.status(HttpStatus.CREATED).body(conductorActualizado);
+        }
+//     return ResponseEntity.ok().build();
     }
     /**
      * Contabiliza la cantidad de viajes asociados a un conductor específico.
@@ -103,5 +107,4 @@ public class ConductorControlador {
     public Long countByConductorId(@PathVariable Long id) {
         return viajeRepositorio.countByConductorId(id);
     }
-
 }
