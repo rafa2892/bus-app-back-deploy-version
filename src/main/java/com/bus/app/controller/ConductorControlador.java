@@ -77,7 +77,6 @@ public class ConductorControlador {
     }
     /**
      * Actualiza la información de un conductor.
-     *
      * Este método maneja una solicitud HTTP PUT para actualizar los datos de un conductor. El conductor
      * se recibe en el cuerpo de la solicitud y se guarda en la base de datos. Si el conductor se guarda correctamente,
      * se retorna un estado 201 (Created) junto con el objeto del conductor actualizado. Si hay un problema en el proceso
