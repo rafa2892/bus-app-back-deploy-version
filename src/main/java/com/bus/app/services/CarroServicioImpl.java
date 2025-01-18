@@ -31,6 +31,7 @@ public class CarroServicioImpl implements CarroService {
     public Carro getCarro(CarroDTO carroDTO) {
 
         Carro carro = new Carro();
+
         List<ImagenDTO> imagenesDTO = carroDTO.getImagenes();
 
         carro.setModelo(carroDTO.getModelo());
@@ -53,15 +54,12 @@ public class CarroServicioImpl implements CarroService {
         carro.setImagenes(listaImagenes);
         }
 
-
         List<Imagen> imagenes = carro.getImagenes();
         if (imagenes != null) {
             for (Imagen imagen : imagenes) {
                 imagen.setCarro(carro);
             }
         }
-
-        
         return carro;
     }
 

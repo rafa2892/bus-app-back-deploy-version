@@ -1,29 +1,25 @@
 package com.bus.app.controller;
+
 import com.bus.app.DTO.CarroDTO;
-import com.bus.app.DTO.HistorialDTO;
+import com.bus.app.DTO.CarroListaDTO;
 import com.bus.app.constantes.Constantes;
 import com.bus.app.excepciones.ResourceNotFoundException;
-import com.bus.app.mappers.HistorialMapper;
 import com.bus.app.modelo.Carro;
 import com.bus.app.modelo.Historial;
 import com.bus.app.modelo.TipoVehiculo;
 import com.bus.app.repositorio.CarrosRepositorio;
 import com.bus.app.services.CarroService;
 import com.bus.app.services.TipoVehiculoServicio;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-//import java.util.logging.Logger;
-
-
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -37,9 +33,21 @@ public class CarroControlador {
     private CarroService carroService;
     @Autowired
     private TipoVehiculoServicio tipoVehiculoServicio;
+
     @GetMapping("/carros")
-    public List<Carro> listAll() {
-     return carrosRepositorio.findAll();
+    public List<CarroListaDTO> listAll() {
+        List<Carro> carros = carrosRepositorio.findAll();
+        return carros.stream()
+                .map(carro -> new CarroListaDTO(
+                        carro.getId(),
+                        carro.getModelo(),
+                        carro.getMarca(),
+                        carro.getAnyo(),
+                        carro.getConsumo(),
+                        carro.getTipoDeVehiculo(),
+                        carro.getNumeroUnidad()
+                ))
+                .toList();
     }
 
     @GetMapping("/carros/tipoVehiculos")
@@ -54,14 +62,12 @@ public class CarroControlador {
         historial.setDescripcionTipo(Constantes.REGISTRO_VIAJE);
         historial.setId(Constantes.REGISTRO_VIAJE_ID);
         return carrosRepositorio.save(carro);
-
     }
 
     @PostMapping("/carros/agregarRegistro")
     public Carro agregarRegistro(@RequestBody CarroDTO carroDTO) {
         return null;
     }
-
 
     @GetMapping("/carros/{id}")
     public ResponseEntity<Carro> findByid(@PathVariable Long id) {
@@ -86,6 +92,5 @@ public class CarroControlador {
     @GetMapping("/carros/tiposHistorial")
     public Map<Long,String> tipoHistoriales() {
         return new HashMap<>(Constantes.getTiposHistoriales());
-
     }
 }

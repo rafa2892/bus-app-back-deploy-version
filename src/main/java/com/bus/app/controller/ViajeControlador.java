@@ -1,5 +1,6 @@
 package com.bus.app.controller;
 
+import com.bus.app.DTO.CarroDTO;
 import com.bus.app.DTO.ViajeDTO;
 import com.bus.app.constantes.Constantes;
 import com.bus.app.modelo.Carro;
@@ -9,7 +10,11 @@ import com.bus.app.services.CarroService;
 import com.bus.app.modelo.Historial;
 import com.bus.app.modelo.Viaje;
 import com.bus.app.services.RegistroHistorialService;
+import com.bus.app.services.ViajeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -24,103 +29,74 @@ import java.util.Optional;
 public class ViajeControlador {
 
     @Autowired
-    private ViajeRepositorio viajeRepositorio;
+    private ViajeService viajeService;
 
-    @Autowired
-    private CarrosRepositorio repositorio;
-
-    @Autowired
-    private CarroService carroService;
-
-    @Autowired
-    private RegistroHistorialService registroHistorialService;
-
+    private static final Logger logger = LoggerFactory.getLogger(ViajeControlador.class);
 
     @GetMapping
-    public List<ViajeDTO> listAll() {
-
-        List<Viaje> listaViajes=  viajeRepositorio.findAll();
-        List<ViajeDTO> viajeDTOList = new ArrayList<>();
-
-        for (Viaje viaje: listaViajes) {
-            viajeDTOList.add(fillListViajeDto(viaje));
+    public ResponseEntity<List<ViajeDTO>> listAll() {
+        try {
+            List<ViajeDTO> viajes = viajeService.listAll();
+            if (viajes.isEmpty()) {
+                return ResponseEntity.noContent().build(); // 204 No Content
+            }
+            return ResponseEntity.ok(viajes);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error al listar los viajes: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
         }
-        return viajeDTOList;
     }
 
     @GetMapping("conductor/{id}")
     public ResponseEntity<List<ViajeDTO>> listByConductorId(@PathVariable Long id) {
-
-        List<Viaje> listaViajes=  viajeRepositorio.findByConductorId(id);
-        List<ViajeDTO> viajeDTOList = new ArrayList<>();
-
-        for (Viaje viaje: listaViajes) {
-            viajeDTOList.add(fillListViajeDto(viaje));
+        // Validates input data (id)
+        try {
+            if (id <= 0) {
+                return ResponseEntity.badRequest().body(null); // 400 Bad Request
+            }
+            List<ViajeDTO> viajes = viajeService.listByConductorId(id);
+            if (viajes.isEmpty()) {
+                return ResponseEntity.noContent().build(); // 204 No Content
+            }
+            return ResponseEntity.ok(viajes);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error al listar los viajes por conductor: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
         }
-
-        if(viajeDTOList.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(viajeDTOList);
     }
 
     @GetMapping("/{id}")
-    public ViajeDTO findbyId(@PathVariable Long id) {
+    public ResponseEntity<ViajeDTO> findbyId(@PathVariable Long id) {
+        try {
+            //Validates input data (id)
+            if (id <= 0) {
+                return ResponseEntity.badRequest().body(null);
+            }
 
-        Optional<Viaje> viaje = viajeRepositorio.findById(id);
+            ViajeDTO viaje = viajeService.findViajeById(id);
 
-        if(viaje.isEmpty()){
-            return null;
-        }
-        else {
-            Viaje viajeResult = viaje.get();
-            return fillListViajeDto(viajeResult);
+            if (viaje == null) {
+                return ResponseEntity.notFound().build();
+            }
+            // HTTP 200 OK
+            return ResponseEntity.ok(viaje);
+        } catch (Exception e) {
+            logger.error("Error al obtener el viaje con ID " + id, e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
-
-    private ViajeDTO fillListViajeDto(Viaje viaje) {
-        ViajeDTO viajeDTO = new ViajeDTO();
-        viajeDTO.setId(viaje.getId());
-        viajeDTO.setRuta(viaje.getRuta());
-        viajeDTO.setFecha(viaje.getFechaViaje());
-        viajeDTO.setCarro(viaje.getCarro());
-        viajeDTO.setConductor(viaje.getConductor());
-        viajeDTO.setKilometraje(viaje.getKilometraje());
-        viajeDTO.setHorasEspera(viaje.getHorasEspera());
-        return viajeDTO;
-    }
-
-    @PostMapping("/viajes")
-    public Viaje guardarViaje(@RequestBody ViajeDTO viajeDTO) {
-
-        Viaje viaje = new Viaje();
-        Carro carro = repositorio.findById(viajeDTO.getCarro().getId()).get();
-
-        viaje.setRuta(viajeDTO.getRuta());
-        viaje.setCarro(carro);
-        viaje.setFechaViaje(new Date());
-        viaje.setConductor(viajeDTO.getConductor());
-        viaje.setKilometraje(viajeDTO.getKilometraje());
-
-        Viaje viajeGuardado =  viajeRepositorio.save(viaje);
-
-        if(viajeGuardado.getId() != null) {
-            Historial historial = new Historial();
-            historial.setIdTipo(Constantes.REGISTRO_VIAJE_ID);
-            historial.setCarro(viaje.getCarro());
-
-            if (viajeDTO.getComentarios() != null) {
-             historial.setComentarios(viajeDTO.getComentarios());
-            }
-            else{
-                historial.setComentarios(Constantes.REGISTRO_VIAJE);
-            }
-
-             this.registroHistorialService.parametrizarHistorial(historial);
-             this.carroService.save(historial);
+    @PostMapping
+    public ResponseEntity<Viaje> guardarViaje(@RequestBody ViajeDTO viajeDTO) {
+        try {
+            Viaje viajeGuardado =  viajeService.guardarViaje(viajeDTO);
+            return ResponseEntity.status(HttpStatus.CREATED).body(viajeGuardado);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error al guardar el viaje: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
         }
-
-        return viajeGuardado;
     }
 }

@@ -35,10 +35,10 @@ public class Carro {
     private String tipoDeVehiculo;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Imagen> imagenes;
 
-    @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Historial> registroHistorial;
 
     private Date ultimoCambioDeAceite;

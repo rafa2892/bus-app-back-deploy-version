@@ -13,19 +13,10 @@ public class Empresa {
     @Column(name = "id", nullable = false)
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String nombre;
-
-    private String ruc;
-
+    private String rif;
     private String direccion;
-
     private String telefono;
-
     private String correo;
-
     private String representante;
-
-
-
 }

@@ -14,30 +14,26 @@ public class Viaje {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    public Long id;
+    private Long id;
 
     private Date fechaViaje;
 
     @ManyToOne
     @JoinColumn(name = "carro_id")
-    public Carro carro;
+    private Carro carro;
 
     @ManyToOne
     @JoinColumn(name = "conductor_id")
-    public Conductor conductor;
+    private Conductor conductor;
 
-    @Column(name = "kilometraje")
-    private Integer kilometraje;
-
-    @Column(name = "horasEspera")
-    private Integer horasEspera;
-
-    @ManyToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "ruta_id")
-    public Ruta ruta;
+    private Ruta ruta;
 
     @ManyToOne
     @JoinColumn(name = "empresa_servicio_ID")
-    public Empresa empresaServicio;
+    private Empresa empresaServicio;
 
+    @Column(name = "nombre_empresa_servicio")
+    private String empresaServicioNombre;
 }
