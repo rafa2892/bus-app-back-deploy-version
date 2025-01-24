@@ -18,6 +18,7 @@ public class ViajeDTO {
     private Ruta ruta;
     private Carro carro;
     private String comentarios;
+    private String empresaServicioNombre;
 
     public ViajeDTO() {
     }

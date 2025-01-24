@@ -14,4 +14,5 @@ public interface ViajeRepositorio extends JpaRepository<Viaje,Long> {
 
     // Método para contar los viajes por el id del conductor
     long countByConductorId(Long conductorId);
+
 }
