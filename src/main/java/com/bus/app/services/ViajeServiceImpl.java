@@ -7,6 +7,7 @@ import com.bus.app.modelo.Historial;
 import com.bus.app.modelo.Viaje;
 import com.bus.app.repositorio.CarrosRepositorio;
 import com.bus.app.repositorio.ViajeRepositorio;
+import com.bus.app.security.BusAppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -47,6 +48,8 @@ public class ViajeServiceImpl implements ViajeService {
     public Viaje save(ViajeDTO viajeDTO) {
 
         Viaje viaje = buildViaje(viajeDTO);
+
+
 
         Viaje viajeGuardado =  viajeRepositorio.save(viaje);
 
@@ -114,6 +117,7 @@ public class ViajeServiceImpl implements ViajeService {
         viajeDTO.setCarro(viaje.getCarro());
         viajeDTO.setConductor(viaje.getConductor());
         viajeDTO.setEmpresaServicioNombre(viaje.getEmpresaServicioNombre());
+        viajeDTO.setDadoAltaUser(viaje.getDadoAltaUser());
 
         return viajeDTO;
     }
@@ -139,6 +143,9 @@ public class ViajeServiceImpl implements ViajeService {
             }
        } else {
            viaje = new Viaje();
+           //Le seteamos el usuario que está creando el servicio
+           String user = BusAppUtils.getUserName();
+           viaje.setDadoAltaUser(user);
        }
        Optional<Carro> co = carroRepositorio.findById(viajeDTO.getCarro().getId());
        Carro carro = co.orElseGet(Carro::new);
@@ -147,6 +154,7 @@ public class ViajeServiceImpl implements ViajeService {
        viaje.setFechaViaje(new Date());
        viaje.setConductor(viajeDTO.getConductor());
        viaje.setEmpresaServicioNombre(viajeDTO.getEmpresaServicioNombre());
+
 
        return viaje;
    }

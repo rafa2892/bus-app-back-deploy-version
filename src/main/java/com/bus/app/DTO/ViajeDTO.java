@@ -19,6 +19,7 @@ public class ViajeDTO {
     private Carro carro;
     private String comentarios;
     private String empresaServicioNombre;
+    private String dadoAltaUser;
 
     public ViajeDTO() {
     }

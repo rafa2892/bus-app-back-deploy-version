@@ -36,4 +36,7 @@ public class Viaje {
 
     @Column(name = "nombre_empresa_servicio")
     private String empresaServicioNombre;
+
+    @Column(name = "dado_alta_user")
+    private String dadoAltaUser;
 }
