@@ -12,8 +12,8 @@ public interface ViajeService {
     List<ViajeDTO> listAll();
     List<ViajeDTO> listByConductorId(@PathVariable Long id);
     ViajeDTO findViajeById(@PathVariable Long id);
-
-    public Viaje buildViaje(ViajeDTO viaje);
+    public Viaje convertToViaje(ViajeDTO viaje);
+    public List<Viaje> filtrarViajes(String numeroUnidad, Long conductorId, String fechaDesde, String fechaHasta);
 
 
 

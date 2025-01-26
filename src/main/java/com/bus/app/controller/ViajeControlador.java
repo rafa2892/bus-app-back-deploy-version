@@ -80,7 +80,7 @@ public class ViajeControlador {
         try {
             //Obtenemos objeto a borrar en la bbdd
             ViajeDTO viaje = viajeService.findViajeById(id);
-            viajeService.delete(viajeService.buildViaje(viaje));
+            viajeService.delete(viajeService.convertToViaje(viaje));
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Se ha borrado satisfactoriamente la entidad");
         } catch (Exception e) {
             logger.error("Ocurrió un error al guardar el viaje: ", e);
@@ -98,11 +98,37 @@ public class ViajeControlador {
                 return ResponseEntity.badRequest().body(null); // 400 Bad Request
             }
             List<ViajeDTO> viajes = viajeService.listByConductorId(id);
+
             if (viajes.isEmpty()) {
                 return ResponseEntity.noContent().build(); // 204 No Content
             }
             return ResponseEntity.ok(viajes);
         } catch (Exception e) {
+            logger.error("Ocurrió un error al listar los viajes por conductor: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
+    }
+
+    // Método para filtrar los viajes
+    @GetMapping("/filtrar")
+    public  ResponseEntity<List<Viaje>> filtrarViajes(
+            @RequestParam(required = false) String numeroUnidad,
+            @RequestParam(required = false) Long conductorId,
+            @RequestParam(required = false) String fechaDesde,
+            @RequestParam(required = false) String fechaHasta) {
+
+
+        try {
+            // Llamamos al servicio para filtrar los viajes
+            List<Viaje> viajes = viajeService.filtrarViajes(numeroUnidad, conductorId, fechaDesde, fechaHasta);
+
+            // HTTP 200 OK
+            if (viajes == null || viajes.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+            return ResponseEntity.ok(viajes);
+        }catch (Exception e) {
             logger.error("Ocurrió un error al listar los viajes por conductor: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(null);

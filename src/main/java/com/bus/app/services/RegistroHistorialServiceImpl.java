@@ -21,7 +21,6 @@ public class RegistroHistorialServiceImpl implements RegistroHistorialService{
   @Autowired
   private UsuariosRepositorio usuariosRepositorio;
 
-
   @Override
   public List<Historial> findAll() {
     return registroHistorialRepositorio.findAll();
@@ -39,6 +38,7 @@ public class RegistroHistorialServiceImpl implements RegistroHistorialService{
 
   @Override
   public void parametrizarHistorial(Historial historial) {
+
     historial.setDescripcionTipo(Constantes.getTiposHistoriales().get(historial.getIdTipo()));
     historial.setFechaAlta(new Date());
 

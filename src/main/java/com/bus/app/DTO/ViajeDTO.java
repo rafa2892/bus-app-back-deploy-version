@@ -20,6 +20,7 @@ public class ViajeDTO {
     private String comentarios;
     private String empresaServicioNombre;
     private String dadoAltaUser;
+    private String deletedDriver;
 
     public ViajeDTO() {
     }

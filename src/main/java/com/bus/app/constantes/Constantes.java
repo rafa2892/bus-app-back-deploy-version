@@ -11,6 +11,10 @@ public class Constantes {
     public final static Long REPARACION_ID = 2L ;
     public final static String OTROS = "Otros";
     public final static Long OTROS_ID = 3L;
+
+    //Registro de actividades
+    public final static String ELIMINACION_CONDUCTOR = "Se ha eliminado un conductor";
+
     public static Map<Long,String> getTiposHistoriales() {
         Map<Long, String> datos = new HashMap<>();
         datos.put(Constantes.REGISTRO_VIAJE_ID, Constantes.REGISTRO_VIAJE);

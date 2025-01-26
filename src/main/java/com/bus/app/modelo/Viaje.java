@@ -16,7 +16,7 @@ public class Viaje {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Date fechaViaje;
+    private Date fecha;
 
     @ManyToOne
     @JoinColumn(name = "carro_id")
@@ -39,4 +39,7 @@ public class Viaje {
 
     @Column(name = "dado_alta_user")
     private String dadoAltaUser;
+
+    @Column(name = "deleted_driver")
+    private String deletedDriver;
 }

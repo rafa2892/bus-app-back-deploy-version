@@ -1,8 +1,12 @@
 package com.bus.app.controller;
+import com.bus.app.DTO.ViajeDTO;
 import com.bus.app.modelo.Conductor;
-import com.bus.app.repositorio.ConductorRepositorio;
+import com.bus.app.modelo.Viaje;
 import com.bus.app.repositorio.ViajeRepositorio;
 import com.bus.app.services.ConductorService;
+import com.bus.app.services.ViajeService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +27,11 @@ public class ConductorControlador {
     @Autowired
     private ViajeRepositorio viajeRepositorio;
 
+    @Autowired
+    private ViajeService viajeServicio;
+
+    private static final Logger logger = LoggerFactory.getLogger(ConductorControlador.class);
+
     @GetMapping
     public List<Conductor> listAll() {
         return conductorService.findAll();
@@ -31,12 +40,18 @@ public class ConductorControlador {
     @GetMapping("/{id}")
     public ResponseEntity<Conductor>findById(@PathVariable Long id){
         Optional<Conductor> conductor = conductorService.findById(id);
-        if(conductor.isEmpty()){
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
-        }
-        else{
-            Conductor conductorFound = conductor.get();
-            return ResponseEntity.status(HttpStatus.OK).body(conductorFound);
+
+        try {
+            if(conductor.isEmpty()){
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+            }
+            else{
+                Conductor conductorFound = conductor.get();
+                return ResponseEntity.status(HttpStatus.OK).body(conductorFound);
+            }
+        }catch(Exception e) {
+            logger.error("Ocurrió un error al listar los viajes: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
 
@@ -47,7 +62,6 @@ public class ConductorControlador {
      */
     @PostMapping()
     public ResponseEntity<Conductor>saveConductor(@RequestBody Conductor conductor) {
-
         Conductor conductorGuardado = conductorService.save(conductor);
 
         if(conductorGuardado.getId() == null || conductorGuardado.getId() == 0) {
@@ -67,10 +81,18 @@ public class ConductorControlador {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteConductor(@PathVariable Long id) {
         try {
+            List<ViajeDTO> listaViajePorConductor = viajeServicio.listByConductorId(id);
+            if(listaViajePorConductor != null && !listaViajePorConductor.isEmpty()) {
+                for(ViajeDTO i : listaViajePorConductor ) {
+                    i.setDeletedDriver(i.getConductor().getNombre() + " " + i.getConductor().getApellido());
+                    viajeServicio.save(i);
+                }
+            }
             // Intentamos eliminar al conductor por su ID
             conductorService.deleteById(id);
             return ResponseEntity.noContent().build();
         } catch (Exception e) {
+            logger.error("Ocurrió un error al listar los viajes: ", e);
             // En caso de error, devolvemos un mensaje de error con estado 400
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error al eliminar el conductor");
         }
