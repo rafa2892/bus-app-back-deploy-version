@@ -32,13 +32,14 @@ public class Historial {
     @JoinColumn(name = "carro_id")
     private Carro carro;
 
-    @JoinColumn(name="fecha_alta")
-    private Date fechaAlta;
-
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "usuario_ID")
     private UserLogin userLogin;
 
+    @JoinColumn(name="fecha_alta")
+    private Date fechaAlta;
+
     private String dsHistorial;
+
 
 }

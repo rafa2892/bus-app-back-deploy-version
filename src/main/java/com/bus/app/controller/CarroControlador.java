@@ -5,7 +5,6 @@ import com.bus.app.DTO.CarroListaDTO;
 import com.bus.app.constantes.Constantes;
 import com.bus.app.excepciones.ResourceNotFoundException;
 import com.bus.app.modelo.Carro;
-import com.bus.app.modelo.Historial;
 import com.bus.app.modelo.TipoVehiculo;
 import com.bus.app.repositorio.CarrosRepositorio;
 import com.bus.app.services.CarroService;
@@ -13,6 +12,7 @@ import com.bus.app.services.TipoVehiculoServicio;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -44,7 +44,7 @@ public class CarroControlador {
                         carro.getMarca(),
                         carro.getAnyo(),
                         carro.getConsumo(),
-                        carro.getTipoDeVehiculo(),
+                        carro.getTipoVehiculo(),
                         carro.getNumeroUnidad()
                 ))
                 .toList();
@@ -56,12 +56,16 @@ public class CarroControlador {
     }
 
     @PostMapping("/carros")
-    public Carro guardarCarro(@RequestBody CarroDTO carroDTO) {
-        Carro carro = carroService.getCarro(carroDTO);
-        Historial historial = new Historial();
-        historial.setDescripcionTipo(Constantes.REGISTRO_VIAJE);
-        historial.setId(Constantes.REGISTRO_VIAJE_ID);
-        return carrosRepositorio.save(carro);
+    public ResponseEntity<Carro> guardarCarro(@RequestBody Carro carro) {
+
+        try {
+            Carro carroGuardado = carroService.save(carro);
+            return ResponseEntity.status(HttpStatus.CREATED).body(carroGuardado);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error al guardar el carro: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
     }
 
     @PostMapping("/carros/agregarRegistro")

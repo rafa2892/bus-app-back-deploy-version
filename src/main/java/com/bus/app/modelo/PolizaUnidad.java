@@ -1,9 +1,6 @@
 package com.bus.app.modelo;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,20 +16,16 @@ public class PolizaUnidad {
     private Long id;
 
     private String aseguradora;
-
     private String poliza;
-
     private Boolean vigente;
-
     private String tipo;
-
     private String cobertura;
-
     private String observaciones;
-
     private Date fechaExpire;
-
     private Date fechaInicio;
-
     private Integer diasPorVencer;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "carro_id")
+    public Carro carro;
 }

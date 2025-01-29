@@ -110,7 +110,7 @@ public class ViajeControlador {
         }
     }
 
-    // Método para filtrar los viajes
+    /* Método para filtrar los viajes */
     @GetMapping("/filtrar")
     public  ResponseEntity<List<Viaje>> filtrarViajes(
             @RequestParam(required = false) String numeroUnidad,
@@ -118,12 +118,9 @@ public class ViajeControlador {
             @RequestParam(required = false) String fechaDesde,
             @RequestParam(required = false) String fechaHasta) {
 
-
         try {
             // Llamamos al servicio para filtrar los viajes
             List<Viaje> viajes = viajeService.filtrarViajes(numeroUnidad, conductorId, fechaDesde, fechaHasta);
-
-            // HTTP 200 OK
             if (viajes == null || viajes.isEmpty()) {
                 return ResponseEntity.notFound().build();
             }

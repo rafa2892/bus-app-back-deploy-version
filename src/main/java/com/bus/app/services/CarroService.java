@@ -9,8 +9,8 @@ import java.util.Optional;
 public interface CarroService {
     Carro getCarro(CarroDTO carro);
 
-    Historial save(Historial historial);
-
     Optional<Carro> findByid(Long id);
+
+    Carro save(Carro carro);
 
 }

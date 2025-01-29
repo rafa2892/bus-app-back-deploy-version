@@ -1,6 +1,6 @@
 package com.bus.app.services;
 
 
-public interface RegistrosActividadesService {
+public interface AuditoriaService {
 //    save();
 }

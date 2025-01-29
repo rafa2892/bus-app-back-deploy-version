@@ -1,5 +1,6 @@
 package com.bus.app.modelo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -16,15 +17,14 @@ public class Bateria {
     private Long id;
 
     private String marca;
-
     private String modelo;
-
     private String capacidad;
-
     private Date fechaInstalacion;
-
     private Date fechaRetiro;
-
     private String observaciones;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "carro_id")
+    public Carro carro;
 
 }

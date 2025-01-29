@@ -32,7 +32,22 @@ public class Carro {
     private Long numeroUnidad;
 
     @Column(name = "tipo_vehiculo")
-    private String tipoDeVehiculo;
+    private String tipoVehiculo;
+
+    @Column(name = "ultimo_cambio_aceite")
+    private Date ultimoCambioDeAceite;
+
+    @Column(name = "siguiente_cambio_aceite")
+    private Date siguienteCambioAceite;
+
+    @OneToOne(mappedBy = "carro")
+    private TituloPropiedad tituloPropiedad;
+
+    @OneToOne(mappedBy = "carro")
+    private PolizaUnidad poliza;
+
+    @OneToOne(mappedBy = "carro")
+    private Bateria bateria;
 
     @JsonManagedReference
     @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
@@ -41,21 +56,7 @@ public class Carro {
     @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Historial> registroHistorial;
 
-    private Date ultimoCambioDeAceite;
 
-    private Date siguienteCambioAceite;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "titulo_ID")
-    private TituloUnidad titulo;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "poliza_ID")
-    private PolizaUnidad poliza;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "bateria_ID")
-    private Bateria bateria;
 
 
 

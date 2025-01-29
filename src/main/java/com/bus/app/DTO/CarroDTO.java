@@ -1,5 +1,8 @@
 package com.bus.app.DTO;
 
+import com.bus.app.modelo.Bateria;
+import com.bus.app.modelo.PolizaUnidad;
+import com.bus.app.modelo.TituloPropiedad;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -23,6 +26,12 @@ public class CarroDTO {
 
     private List<ImagenDTO> imagenes;
 
-    private String tipoDeVehiculo;
+    private String tipoVehiculo;
+
+    private TituloPropiedad tituloPropiedad;
+
+    private PolizaUnidad poliza;
+
+    private Bateria bateria;
 
 }

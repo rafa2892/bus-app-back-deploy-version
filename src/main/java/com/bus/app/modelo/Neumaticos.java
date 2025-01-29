@@ -19,19 +19,12 @@ public class Neumaticos {
     private Carro carro;
 
     private String marca;
-
     private String modelo;
-
     private String medida;
-
     private String observaciones;
-
     private String fechaInstalacion;
-
     private String fechaRetiro;
-
     private String estado;
-
     private boolean requiereCambio;
 
 }
