@@ -1,5 +1,6 @@
 package com.bus.app.modelo;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,8 +12,10 @@ import java.util.Date;
 @Entity
 @Table(name = "poliza_unidad")
 public class PolizaUnidad {
+
     @Id
     @Column(name = "id", nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private String aseguradora;
@@ -27,5 +30,6 @@ public class PolizaUnidad {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "carro_id")
+    @JsonBackReference
     public Carro carro;
 }

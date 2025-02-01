@@ -62,14 +62,20 @@ public class ConductorControlador {
      */
     @PostMapping()
     public ResponseEntity<Conductor>saveConductor(@RequestBody Conductor conductor) {
-        Conductor conductorGuardado = conductorService.save(conductor);
 
-        if(conductorGuardado.getId() == null || conductorGuardado.getId() == 0) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-        }
-        else {
-            return ResponseEntity.status(HttpStatus.CREATED).body(conductorGuardado);
-        }
+        try {
+             Conductor conductorGuardado = conductorService.save(conductor);
+            if(conductorGuardado.getId() == null || conductorGuardado.getId() == 0) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
+            else {
+                return ResponseEntity.status(HttpStatus.CREATED).body(conductorGuardado);
+            }
+        }catch (Exception e) {
+                logger.error("Ocurrió un error al listar los viajes: ", e);
+                // En caso de error, devolvemos un mensaje de error con estado 400
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
     }
 
     /**

@@ -24,7 +24,7 @@ public class CarroDTO {
 
     private Long numeroUnidad;
 
-    private List<ImagenDTO> imagenes;
+    private List<ImagenDTO> imagenesBD;
 
     private String tipoVehiculo;
 

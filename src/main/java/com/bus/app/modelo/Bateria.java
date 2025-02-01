@@ -23,8 +23,9 @@ public class Bateria {
     private Date fechaRetiro;
     private String observaciones;
 
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne
     @JoinColumn(name = "carro_id")
+    @JsonBackReference
     public Carro carro;
 
 }

@@ -5,7 +5,7 @@ import com.bus.app.constantes.Constantes;
 import com.bus.app.modelo.Carro;
 import com.bus.app.modelo.Historial;
 import com.bus.app.modelo.Viaje;
-import com.bus.app.repositorio.CarrosRepositorio;
+import com.bus.app.repositorio.CarroRepositorio;
 import com.bus.app.repositorio.ViajeRepositorio;
 import com.bus.app.security.BusAppUtils;
 import com.bus.app.specification.ViajeSpecification;
@@ -26,7 +26,7 @@ public class ViajeServiceImpl implements ViajeService {
     private ViajeRepositorio viajeRepositorio;
 
     @Autowired
-    private CarrosRepositorio carroRepositorio;
+    private CarroRepositorio carroRepositorio;
 
 
     @Autowired

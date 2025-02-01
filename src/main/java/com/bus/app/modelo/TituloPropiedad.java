@@ -21,11 +21,14 @@ public class TituloPropiedad {
     private String apellido;
     private String descripcion;
 
-    @Lob // Anotación para campos grandes
-    @Column(name = "imagen", columnDefinition = "MEDIUMBLOB")
-    private byte[] imagen;
+    private String archivoPDFnombre;
 
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "carro_id")
-    public Carro carro;
+    @Lob
+    @Column(columnDefinition = "LONGBLOB")
+    private byte[] archivoPDF;
+
+
+
+
+
 }

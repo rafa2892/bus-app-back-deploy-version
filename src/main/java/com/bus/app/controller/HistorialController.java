@@ -34,7 +34,7 @@ public class HistorialController {
     @GetMapping("/historial/{id}")
     public ResponseEntity<HistorialDTO> findById(@PathVariable Long id) {
         Optional<Historial> historial = registroHistorialService.findById(id);
-        if(historial.isPresent()) {
+        if (historial.isPresent()) {
             return historial.map(h -> ResponseEntity.ok(HistorialMapper.toDto(h)))
                     .orElseGet(() -> ResponseEntity.status(HttpStatus.NOT_FOUND).body(null));
         } else {
@@ -45,10 +45,14 @@ public class HistorialController {
 
     @PostMapping("/historial")
     public Historial registrarHistorial(@RequestBody HistorialDTO historialDTO) {
-        Historial historial = HistorialMapper.toEntity(historialDTO);
-        this.registroHistorialService.parametrizarHistorial(historial);
-        Optional<Carro> carroBD = carroService.findByid(historial.getCarro().getId());
-        carroBD.ifPresent(historial::setCarro);
-        return this.registroHistorialService.save(historial);
+//        Historial historial = HistorialMapper.toEntity(historialDTO);
+//        this.registroHistorialService.parametrizarHistorial(historial);
+//        Optional<Carro> carroBD = carroService.findById(historial.getCarro().getId());
+//        carroBD.ifPresent(historial::setCarro);
+//        return this.registroHistorialService.save(historial);
+//    }
+
+        return null;
     }
+
 }

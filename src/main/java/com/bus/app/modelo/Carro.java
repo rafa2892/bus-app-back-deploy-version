@@ -1,5 +1,6 @@
 package com.bus.app.modelo;
 
+import com.bus.app.DTO.ImagenDTO;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,6 +13,7 @@ import java.util.List;
 @Getter
 @Entity
 @Table(name= "carros")
+
 public class Carro {
 
     @Id
@@ -40,18 +42,23 @@ public class Carro {
     @Column(name = "siguiente_cambio_aceite")
     private Date siguienteCambioAceite;
 
-    @OneToOne(mappedBy = "carro")
+    @OneToOne(cascade = CascadeType.ALL)
     private TituloPropiedad tituloPropiedad;
 
-    @OneToOne(mappedBy = "carro")
+    @OneToOne(mappedBy = "carro", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private PolizaUnidad poliza;
 
-    @OneToOne(mappedBy = "carro")
+    @OneToOne(mappedBy = "carro", cascade = CascadeType.ALL)
+    @JsonManagedReference
     private Bateria bateria;
 
-    @JsonManagedReference
     @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Imagen> imagenes;
+    @JsonManagedReference
+    private List<Imagen> imagenesBd;
+
+    @Transient
+    private List<ImagenDTO> imagenes;  // Lista de imágenes (byte arrays)
 
     @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Historial> registroHistorial;

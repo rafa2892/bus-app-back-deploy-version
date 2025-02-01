@@ -1,12 +1,10 @@
 package com.bus.app.controller;
 
-import com.bus.app.DTO.CarroDTO;
 import com.bus.app.DTO.CarroListaDTO;
-import com.bus.app.constantes.Constantes;
 import com.bus.app.excepciones.ResourceNotFoundException;
 import com.bus.app.modelo.Carro;
 import com.bus.app.modelo.TipoVehiculo;
-import com.bus.app.repositorio.CarrosRepositorio;
+import com.bus.app.repositorio.CarroRepositorio;
 import com.bus.app.services.CarroService;
 import com.bus.app.services.TipoVehiculoServicio;
 import org.apache.logging.log4j.LogManager;
@@ -16,10 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -28,7 +23,7 @@ public class CarroControlador {
 
     private static final Logger logger = LogManager.getLogger(CarroControlador.class.getName());
     @Autowired
-    private CarrosRepositorio carrosRepositorio;
+    private CarroRepositorio carrosRepositorio;
     @Autowired
     private CarroService carroService;
     @Autowired
@@ -55,9 +50,9 @@ public class CarroControlador {
         return tipoVehiculoServicio.findAll();
     }
 
+
     @PostMapping("/carros")
     public ResponseEntity<Carro> guardarCarro(@RequestBody Carro carro) {
-
         try {
             Carro carroGuardado = carroService.save(carro);
             return ResponseEntity.status(HttpStatus.CREATED).body(carroGuardado);
@@ -68,33 +63,55 @@ public class CarroControlador {
         }
     }
 
-    @PostMapping("/carros/agregarRegistro")
-    public Carro agregarRegistro(@RequestBody CarroDTO carroDTO) {
-        return null;
+    @PutMapping("/carros/{id}")
+    public ResponseEntity<Carro> actualizarCarro(@PathVariable Long id , @RequestBody Carro carro) {
+        try {
+            Carro carroBD  = carroService.save(carro);
+            return ResponseEntity.ok(null);
+        }
+        catch(Exception e) {
+            logger.error("Ocurrió un error al actualizar el carro: ", e);
+            // En caso de error, devolvemos un mensaje de error con estado 400
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @GetMapping("/carros/{id}")
-    public ResponseEntity<Carro> findByid(@PathVariable Long id) {
-        Carro carro = carrosRepositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException("Carro no encontrado"));
-        return ResponseEntity.ok(carro);
-    }
-
-    @PutMapping("/carros/{id}")
-    public ResponseEntity<Carro> actualizarCarro(@PathVariable Long id , @RequestBody CarroDTO carroDTO) {
-        Carro carro = carroService.getCarro(carroDTO);
-        carro.setId(id);
-        carrosRepositorio.save(carro);
-        return ResponseEntity.ok(carro);
+    public ResponseEntity<Carro> findById(@PathVariable Long id) {
+        try {
+            Carro carro = carrosRepositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException("Carro no encontrado"));
+            return ResponseEntity.ok(carro);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error: ", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
     @DeleteMapping("/carros/{id}")
-    public void eliminarCarro(@PathVariable Long id) {
-        Optional<Carro> optionalCarro = carrosRepositorio.findById(id);
-        optionalCarro.ifPresent(carro -> carrosRepositorio.delete(carro));
+    public ResponseEntity<Object> eliminarCarro(@PathVariable Long id) {
+        try {
+            carroService.delete(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error al borrar el vehiculo de la base datos: ", e);
+            // En caso de error, devolvemos un mensaje de error con estado 400
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
     }
 
-    @GetMapping("/carros/tiposHistorial")
-    public Map<Long,String> tipoHistoriales() {
-        return new HashMap<>(Constantes.getTiposHistoriales());
+    @GetMapping("/carros/existe/{numeroUnidad}")
+    public ResponseEntity<Boolean> existeCarro(@PathVariable Long numeroUnidad) {
+        try {
+            boolean existe = carroService.existsByNumeroUnidad(numeroUnidad);
+            return ResponseEntity.ok(existe);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error: ", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @PostMapping("/carros/agregarRegistro")
+    public Carro agregarRegistro(@RequestBody Carro carro) {
+        return null;
     }
 }
