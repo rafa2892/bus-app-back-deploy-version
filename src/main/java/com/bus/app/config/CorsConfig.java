@@ -15,11 +15,13 @@ public class CorsConfig {
     public CorsFilter corsFilter() {
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         CorsConfiguration config = new CorsConfiguration();
+
         config.setAllowCredentials(true); // Permitir credenciales
         config.setAllowedOrigins(Arrays.asList("http://localhost:4200", "http://localhost:3000"));
-//        config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization"));
         config.setAllowedHeaders(Arrays.asList("Origin", "Content-Type", "Accept", "Authorization", "Cookie", "Set-Cookie"));
         config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")); // Añadir OPTIONS para solicitudes preflight
+        config.setExposedHeaders(Arrays.asList("Content-Disposition", "X-Filename"));
+
         source.registerCorsConfiguration("/**", config);
         return new CorsFilter(source);
     }

@@ -21,9 +21,6 @@ public class CarroServicioImpl implements CarroService {
     @Autowired
     private CarroRepositorio carrosRepositorio;
 
-    @Autowired
-    private UsuariosRepositorio usuariosRepositorio;
-
 
     @Override
     public Carro save(Carro carro) {

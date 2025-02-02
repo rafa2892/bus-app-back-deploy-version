@@ -20,7 +20,6 @@ public class TituloPropiedad {
     private String nombre;
     private String apellido;
     private String descripcion;
-
     private String archivoPDFnombre;
 
     @Lob

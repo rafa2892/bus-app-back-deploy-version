@@ -4,17 +4,21 @@ import com.bus.app.DTO.CarroListaDTO;
 import com.bus.app.excepciones.ResourceNotFoundException;
 import com.bus.app.modelo.Carro;
 import com.bus.app.modelo.TipoVehiculo;
+import com.bus.app.modelo.TituloPropiedad;
 import com.bus.app.repositorio.CarroRepositorio;
 import com.bus.app.services.CarroService;
 import com.bus.app.services.TipoVehiculoServicio;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/v1/")
@@ -109,6 +113,42 @@ public class CarroControlador {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
+
+    @GetMapping("carros/existePDF/{id}")
+    public ResponseEntity<Boolean> existePdfBBDD(@PathVariable Long id) {
+        try {
+            Carro carro = carroService.findById(id);
+
+            boolean existePDF = carro.getTituloPropiedad() != null
+                    && carro.getTituloPropiedad().getArchivoPDF() != null;
+
+            return ResponseEntity.ok(existePDF);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error: ", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+    @GetMapping("carros/descargar/{id}")
+    public ResponseEntity<byte[]> descargarArchivo(@PathVariable Long id) {
+        try {
+
+            Carro carro = carroService.findById(id);
+            TituloPropiedad titulo = carro.getTituloPropiedad();
+
+            // Configurar encabezados de la respuesta para descargar el archivo
+            return ResponseEntity.ok()
+                    .contentType(MediaType.APPLICATION_PDF) // Asegurar que se maneja como PDF
+                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + titulo.getArchivoPDFnombre() + "\"")
+                    .body(titulo.getArchivoPDF());
+        } catch (Exception e) {
+            logger.error("Ocurrió un error: ", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+    }
+
+
+
 
     @PostMapping("/carros/agregarRegistro")
     public Carro agregarRegistro(@RequestBody Carro carro) {
