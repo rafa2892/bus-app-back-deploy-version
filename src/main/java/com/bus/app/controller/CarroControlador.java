@@ -75,7 +75,6 @@ public class CarroControlador {
         }
         catch(Exception e) {
             logger.error("Ocurrió un error al actualizar el carro: ", e);
-            // En caso de error, devolvemos un mensaje de error con estado 400
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
@@ -98,7 +97,6 @@ public class CarroControlador {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         } catch (Exception e) {
             logger.error("Ocurrió un error al borrar el vehiculo de la base datos: ", e);
-            // En caso de error, devolvemos un mensaje de error con estado 400
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
@@ -112,6 +110,26 @@ public class CarroControlador {
             logger.error("Ocurrió un error: ", e);
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+    }
+
+    @GetMapping("carros/existeEdicion")
+    public ResponseEntity<Boolean> verificarNumeroUnidadModoEdicion(
+            @RequestParam("numeroUnidad") Long numeroUnidad,
+            @RequestParam("carroId") Long carroId) {
+
+            try{
+                Carro carro = carroService.findById(carroId);
+
+                if(carro.getNumeroUnidad().equals(numeroUnidad)) {
+                    return ResponseEntity.ok(false);
+                }else {
+                   return existeCarro(numeroUnidad);
+                }
+            }
+            catch(Exception e){
+                logger.error("Ocurrió un error: ", e);
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+            }
     }
 
     @GetMapping("carros/existePDF/{id}")
@@ -132,7 +150,6 @@ public class CarroControlador {
     @GetMapping("carros/descargar/{id}")
     public ResponseEntity<byte[]> descargarArchivo(@PathVariable Long id) {
         try {
-
             Carro carro = carroService.findById(id);
             TituloPropiedad titulo = carro.getTituloPropiedad();
 
@@ -146,9 +163,6 @@ public class CarroControlador {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
-
-
-
 
     @PostMapping("/carros/agregarRegistro")
     public Carro agregarRegistro(@RequestBody Carro carro) {

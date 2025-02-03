@@ -29,15 +29,11 @@ public class CarroServicioImpl implements CarroService {
     }
 
     private Carro setCarroProperties(Carro carro) {
+
         if(carro.getImagenes() != null && carro.getImagenes().size() > 0) {
             getCarroWithFormattedImages(carro);
-        }
-
-        else {
-            Optional<Carro> co =carrosRepositorio.findById(carro.getId());
-            Carro ca = co.get();
-            ca.getImagenesBd().clear();
-            carro.setImagenesBd(ca.getImagenesBd());
+        }else {
+            carro.setImagenesBd(new ArrayList<>());
         }
 
         if(carro.getBateria() !=  null ) {
@@ -68,8 +64,8 @@ public class CarroServicioImpl implements CarroService {
     public void delete(Long id) {
 
         Carro carro = null;
-
         Optional<Carro> co = carrosRepositorio.findById(id);
+
         if(co.isPresent()) {
             carro = co.get();
             carrosRepositorio.delete(carro);
@@ -146,6 +142,7 @@ public class CarroServicioImpl implements CarroService {
                 Carro cbd = new Carro();
 
                 if(o.isPresent()) {cbd = o.get();}
+
                 if(cbd.getImagenesBd() != null) {
                     carro.setImagenesBd(cbd.getImagenesBd());
                 }else {

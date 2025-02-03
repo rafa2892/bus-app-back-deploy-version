@@ -10,11 +10,12 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class CarroListaDTO {
+
     private Long id;
     private String modelo;
     private String marca;
     private Long anyo;
     private Long consumo;
-    private String tipoDeVehiculo;
+    private String tipoVehiculo;
     private Long numeroUnidad;
 }
