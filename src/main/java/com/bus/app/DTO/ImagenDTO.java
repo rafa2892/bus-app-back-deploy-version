@@ -8,11 +8,8 @@ import lombok.Setter;
 public class ImagenDTO {
 
     private Long id;
-
     private String imagen;
-
     private String imagenUrl;
-
     private String imagenDesc;
 
 

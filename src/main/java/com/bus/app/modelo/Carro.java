@@ -53,7 +53,7 @@ public class Carro {
     @JsonManagedReference
     private Bateria bateria;
 
-    @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL, fetch = FetchType.LAZY, orphanRemoval = true)
     @JsonManagedReference
     private List<Imagen> imagenesBd;
 
