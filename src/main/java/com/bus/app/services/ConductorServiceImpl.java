@@ -1,8 +1,9 @@
 package com.bus.app.services;
 
+import com.bus.app.modelo.Carro;
 import com.bus.app.modelo.Conductor;
 import com.bus.app.repositorio.ConductorRepositorio;
-import com.bus.app.security.BusAppUtils;
+import com.bus.app.tools.BusAppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,9 @@ public class ConductorServiceImpl implements ConductorService {
 
     @Autowired
     private ConductorRepositorio conductorRepositorio;
+
+    @Autowired
+    private AuditoriaService auditoriaService;
 
     /**
      * Guarda un conductor nuevo.
@@ -41,6 +45,16 @@ public class ConductorServiceImpl implements ConductorService {
 
     @Override
     public void deleteById(Long id) {
+
+        Conductor conductor = null;
+        Optional<Conductor> co = conductorRepositorio.findById(id);
+
+        if(co.isPresent()) {
+            conductor = co.get();
+            conductorRepositorio.delete(conductor);
+        }
+        //Creamos auditoria de eliminación
+        auditoriaService.buildDeleteAudit(conductor);
         conductorRepositorio.deleteById(id);
     }
 

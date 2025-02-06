@@ -40,7 +40,6 @@ public class ConductorControlador {
     @GetMapping("/{id}")
     public ResponseEntity<Conductor>findById(@PathVariable Long id){
         Optional<Conductor> conductor = conductorService.findById(id);
-
         try {
             if(conductor.isEmpty()){
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
@@ -62,7 +61,6 @@ public class ConductorControlador {
      */
     @PostMapping()
     public ResponseEntity<Conductor>saveConductor(@RequestBody Conductor conductor) {
-
         try {
              Conductor conductorGuardado = conductorService.save(conductor);
             if(conductorGuardado.getId() == null || conductorGuardado.getId() == 0) {
@@ -115,7 +113,6 @@ public class ConductorControlador {
      */
     @PutMapping("/{id}")
     public ResponseEntity<Conductor> updateConductor(@PathVariable Long id, @RequestBody Conductor conductor) {
-
         Conductor conductorActualizado = conductorService.save(conductor);
         if (conductorActualizado == null) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);

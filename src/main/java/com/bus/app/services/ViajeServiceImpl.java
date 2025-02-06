@@ -6,9 +6,10 @@ import com.bus.app.modelo.Carro;
 import com.bus.app.modelo.Historial;
 import com.bus.app.modelo.Viaje;
 import com.bus.app.repositorio.CarroRepositorio;
+import com.bus.app.repositorio.UsuariosRepositorio;
 import com.bus.app.repositorio.ViajeRepositorio;
-import com.bus.app.security.BusAppUtils;
-import com.bus.app.specification.ViajeSpecification;
+import com.bus.app.tools.BusAppUtils;
+import com.bus.app.tools.specification.ViajeSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -24,18 +25,17 @@ public class ViajeServiceImpl implements ViajeService {
 
     @Autowired
     private ViajeRepositorio viajeRepositorio;
-
     @Autowired
     private CarroRepositorio carroRepositorio;
-
-
     @Autowired
     private HistorialService historialService;
+    @Autowired
+    private AuditoriaService auditoriaService;
 
     @Override
     public List<ViajeDTO> listAll() {
 
-        List<Viaje> listaViajes=  viajeRepositorio.findAll();
+        List<Viaje> listaViajes=  viajeRepositorio.findAllByOrderByFechaDesc();
         List<ViajeDTO> viajeDTOList = new ArrayList<>();
 
         for (Viaje viaje: listaViajes) {
@@ -69,8 +69,15 @@ public class ViajeServiceImpl implements ViajeService {
     }
 
     @Override
-    public void delete(Viaje viaje) {
-         viajeRepositorio.delete(viaje);
+    public void delete(Long id) {
+        Viaje viaje = new Viaje();
+        Optional<Viaje> o = viajeRepositorio.findById(id);
+
+        if(o.isPresent()){
+            viaje = o.get();
+            viajeRepositorio.delete(viaje);
+        }
+        auditoriaService.buildDeleteAudit(viaje);
     }
 
 

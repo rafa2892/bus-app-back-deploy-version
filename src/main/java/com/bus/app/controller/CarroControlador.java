@@ -54,7 +54,6 @@ public class CarroControlador {
         return tipoVehiculoServicio.findAll();
     }
 
-
     @PostMapping("/carros")
     public ResponseEntity<Carro> guardarCarro(@RequestBody Carro carro) {
         try {
@@ -70,8 +69,8 @@ public class CarroControlador {
     @PutMapping("/carros/{id}")
     public ResponseEntity<Carro> actualizarCarro(@PathVariable Long id , @RequestBody Carro carro) {
         try {
-            Carro carroBD  = carroService.save(carro);
-            return ResponseEntity.ok(null);
+            Carro carroGuardado  = carroService.save(carro);
+            return ResponseEntity.ok().body(carroGuardado);
         }
         catch(Exception e) {
             logger.error("Ocurrió un error al actualizar el carro: ", e);
@@ -91,7 +90,7 @@ public class CarroControlador {
     }
 
     @DeleteMapping("/carros/{id}")
-    public ResponseEntity<Object> eliminarCarro(@PathVariable Long id) {
+    public ResponseEntity<String> eliminarCarro(@PathVariable Long id) {
         try {
             carroService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);

@@ -33,19 +33,25 @@ public class HistorialController {
 
     @GetMapping("/historial")
     public ResponseEntity<List<Historial>> listAll() {
-        List<Historial> historiales = historialService.findAll();
+        try {
+            List<Historial> historiales = historialService.findAll();
 
-        if (historiales.isEmpty()) {
-            return ResponseEntity.noContent().build(); // Devuelve 204 si no hay historial
+            if (historiales.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+
+            return ResponseEntity.ok(historiales);
+        } catch (Exception e) {
+            logger.error("Error al obtener el historial: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
         }
-
-        return ResponseEntity.ok(historiales); // Devuelve 200 OK con los datos
     }
+
 
 
     @PostMapping("/historial")
     public ResponseEntity<Historial> saveHistorial(@RequestBody HistorialDTO historialDTO) {
-
         try {
             Historial historial = HistorialMapper.toEntity(historialDTO);
             historialService.parametrizarHistorial(historial);
@@ -58,27 +64,27 @@ public class HistorialController {
         }
     }
 
-        @PutMapping("/historial/{id}")
-        public ResponseEntity<Historial> actualizarCarro(@PathVariable Long id , @RequestBody HistorialDTO historialDTO)  {
-            try {
-                    return saveHistorial(historialDTO);
-            }catch(Exception e) {
-                logger.error("Ocurrió un error contacte con el administrador: ", e);
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            }
+    @PutMapping("/historial/{id}")
+    public ResponseEntity<Historial> actualizarHistorial(@PathVariable Long id , @RequestBody HistorialDTO historialDTO)  {
+        try {
+                return saveHistorial(historialDTO);
+        }catch(Exception e) {
+            logger.error("Ocurrió un error contacte con el administrador: ", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+    }
 
 
-        @DeleteMapping("/historial/{id}")
-        public ResponseEntity<Object> deleteHistorial(@PathVariable Long id) {
-            try {
-                historialService.delete(id);
-                return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
-            }    catch(Exception e) {
-                logger.error("Ocurrió un error contacte con el administrador: ", e);
-                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-            }
+    @DeleteMapping("/historial/{id}")
+    public ResponseEntity<Object> deleteHistorial(@PathVariable Long id) {
+        try {
+            historialService.delete(id);
+            return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
+        }    catch(Exception e) {
+            logger.error("Ocurrió un error contacte con el administrador: ", e);
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
+    }
 
 
     @GetMapping("/historial/{id}")
@@ -92,7 +98,6 @@ public class HistorialController {
                     .body(null);
         }
     }
-
 
     @GetMapping("/historial/tiposRegistroHistorial")
     public ResponseEntity<Map<Long,String>> getTipoRegistroHistorial() {

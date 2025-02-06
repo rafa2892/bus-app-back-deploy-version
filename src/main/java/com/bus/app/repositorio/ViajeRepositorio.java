@@ -1,6 +1,7 @@
 package com.bus.app.repositorio;
 
 
+import com.bus.app.modelo.RegistroActividad;
 import com.bus.app.modelo.Viaje;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
@@ -16,4 +17,5 @@ public interface ViajeRepositorio extends JpaRepository<Viaje, Long>, JpaSpecifi
     // Método para contar los viajes por el id del conductor
     long countByConductorId(Long conductorId);
 
+    List<Viaje> findAllByOrderByFechaDesc();
 }

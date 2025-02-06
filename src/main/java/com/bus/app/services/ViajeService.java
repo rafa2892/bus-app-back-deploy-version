@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface ViajeService {
     Viaje save(ViajeDTO viajeDTO);
-    void delete(Viaje viaje);
+    void delete(Long id);
     List<ViajeDTO> listAll();
     List<ViajeDTO> listByConductorId(@PathVariable Long id);
     ViajeDTO findViajeById(@PathVariable Long id);

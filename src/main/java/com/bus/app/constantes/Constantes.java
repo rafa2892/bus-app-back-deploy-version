@@ -15,6 +15,8 @@ public class Constantes {
     /*Registro de actividades */
     public final static String ELIMINACION_CONDUCTOR = "Se ha eliminado un conductor";
 
+    public final static String MENSAJE_GENERICO_DELETE_AUDITORIA = "SE HA ELIMINADO UN/A : ";
+
     //Tipos de actividades
     public final static Map<String, Long> TIPOS_AUDIT = Map.of(
             "POST", 1L,

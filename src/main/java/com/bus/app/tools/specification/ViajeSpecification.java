@@ -1,4 +1,4 @@
-package com.bus.app.specification;
+package com.bus.app.tools.specification;
 
 import com.bus.app.modelo.Viaje;
 import jakarta.persistence.criteria.Predicate;

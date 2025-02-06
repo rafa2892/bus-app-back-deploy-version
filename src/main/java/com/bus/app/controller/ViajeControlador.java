@@ -70,12 +70,21 @@ public class ViajeControlador {
         }
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<Viaje> update(@PathVariable Long id , @RequestBody ViajeDTO viajeDTO) {
+        try {
+            return save(viajeDTO);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error al actualizar el viaje: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
         try {
-            //Obtenemos objeto a borrar en la bbdd
-            ViajeDTO viaje = viajeService.findViajeById(id);
-            viajeService.delete(viajeService.convertToViaje(viaje));
+            viajeService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Se ha borrado satisfactoriamente la entidad");
         } catch (Exception e) {
             logger.error("Ocurrió un error al guardar el viaje: ", e);

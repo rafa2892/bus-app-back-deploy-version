@@ -21,6 +21,9 @@ public class CarroServicioImpl implements CarroService {
     @Autowired
     private CarroRepositorio carrosRepositorio;
 
+    @Autowired
+    private AuditoriaService auditoriaService;
+
 
     @Override
     public Carro save(Carro carro) {
@@ -49,7 +52,6 @@ public class CarroServicioImpl implements CarroService {
 
     @Override
     public Carro findById(Long id) {
-
         Optional<Carro> carroBD = carrosRepositorio.findById(id);
         Carro carro = null;
 
@@ -62,7 +64,6 @@ public class CarroServicioImpl implements CarroService {
 
     @Override
     public void delete(Long id) {
-
         Carro carro = null;
         Optional<Carro> co = carrosRepositorio.findById(id);
 
@@ -70,6 +71,8 @@ public class CarroServicioImpl implements CarroService {
             carro = co.get();
             carrosRepositorio.delete(carro);
         }
+        //Creamos auditoria de eliminación
+        auditoriaService.buildDeleteAudit(carro);
     }
 
     @Override

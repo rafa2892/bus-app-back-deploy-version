@@ -2,9 +2,11 @@ package com.bus.app.services;
 
 import com.bus.app.constantes.Constantes;
 import com.bus.app.modelo.Historial;
+import com.bus.app.modelo.RegistroActividad;
+import com.bus.app.modelo.UserLogin;
 import com.bus.app.repositorio.HistorialRepositorio;
 import com.bus.app.repositorio.UsuariosRepositorio;
-import com.bus.app.security.BusAppUtils;
+import com.bus.app.tools.BusAppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +19,11 @@ public class HistorialServiceImpl implements HistorialService {
 
   @Autowired
   HistorialRepositorio historialRepositorio;
-
   @Autowired
   private UsuariosRepositorio usuariosRepositorio;
+
+  @Autowired
+  private AuditoriaService auditoriaService;
 
   @Override
   public List<Historial> findAll() {
@@ -38,7 +42,15 @@ public class HistorialServiceImpl implements HistorialService {
 
   @Override
   public void delete(Long id) {
-    historialRepositorio.deleteById(id);
+    Optional<Historial> ho = historialRepositorio.findById(id);
+    Historial historialEliminado = new Historial();
+
+    if (ho.isPresent()) {
+      historialEliminado = ho.get();
+      historialRepositorio.deleteById(id);
+    }
+    // Se borra la entidad y realizamos auditoria de actividad
+    auditoriaService.buildDeleteAudit(historialEliminado);
   }
 
   @Override

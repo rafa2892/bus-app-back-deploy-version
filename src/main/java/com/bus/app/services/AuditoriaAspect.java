@@ -4,7 +4,7 @@ import com.bus.app.controller.AuthenticationController;
 import com.bus.app.modelo.RegistroActividad;
 import com.bus.app.modelo.UserLogin;
 import com.bus.app.repositorio.UsuariosRepositorio;
-import com.bus.app.security.BusAppUtils;
+import com.bus.app.tools.BusAppUtils;
 import com.bus.app.tools.AuditableEntity;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -13,9 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 
@@ -35,14 +33,10 @@ public class AuditoriaAspect {
     private UsuariosRepositorio usuariosRepositorio;
 
     @Autowired
-    private UserDetailsService UserDetailsService;
-
-    @Autowired
     private ObjectMapper objectMapper;
 
     @Around("@annotation(org.springframework.web.bind.annotation.PostMapping) || " +
-            "@annotation(org.springframework.web.bind.annotation.PutMapping) || " +
-            "@annotation(org.springframework.web.bind.annotation.DeleteMapping)")
+            "@annotation(org.springframework.web.bind.annotation.PutMapping)")
     public Object auditTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
 
         // Obtener el nombre del método o clase que se está ejecutando
@@ -72,6 +66,7 @@ public class AuditoriaAspect {
         // Si el resultado es un ResponseEntity, verificamos su contenido
         if (result instanceof ResponseEntity<?> responseEntity) {
             Object body = responseEntity.getBody();
+
             if (body instanceof AuditableEntity) {
                 tipoEntidad = body.getClass().getSimpleName().replace("DTO", "");
                 objetoAfectado = convertirAJson(body);
@@ -90,15 +85,6 @@ public class AuditoriaAspect {
             tipoEntidad = args[0].getClass().getSimpleName().replace("DTO", "");
             objetoAfectado = convertirAJson(args[0]);
         }
-
-
-
-
-
-
-
-
-
 
         // Si detectamos un DTO, lo convertimos en su nombre de entidad real
         tipoEntidad = tipoEntidad.replace("DTO", "");
@@ -120,9 +106,6 @@ public class AuditoriaAspect {
         } else if (method.isAnnotationPresent(PutMapping.class)) {
             httpMethod = "PUT";
             comentario = "SE HA EDITADO UN/A: ".concat(!tipoEntidad.isBlank() ? tipoEntidad : "NO DATA");
-        } else if (method.isAnnotationPresent(DeleteMapping.class)) {
-            httpMethod = "DELETE";
-            comentario = "SE HA BORRADO UN/A: ".concat(!tipoEntidad.isBlank() ? tipoEntidad : "NO DATA");
         }
 
         registroActividad.setComentarios(comentario);
