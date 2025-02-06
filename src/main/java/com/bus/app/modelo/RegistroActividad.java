@@ -9,7 +9,7 @@ import java.util.Date;
 @Getter
 @Setter
 @Entity()
-@Table(name="registros_actividades")
+@Table(name="registros_actividad")
 public class RegistroActividad {
 
     @Id
@@ -18,7 +18,7 @@ public class RegistroActividad {
     private String userName;
     private Date fecha;
     private String comentarios;
-    private String tipoActividad;
+    private Long tipoActividad;
     private String rol;
 
 }

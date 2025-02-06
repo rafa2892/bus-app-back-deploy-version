@@ -24,14 +24,12 @@ public class ViajeControlador {
 
     @GetMapping
     public ResponseEntity<List<ViajeDTO>> listAll() {
-
         try {
             List<ViajeDTO> viajes = viajeService.listAll();
 
             if (viajes.isEmpty()) {
                 return ResponseEntity.noContent().build(); // 204 No Content
             }
-
             return ResponseEntity.ok(viajes);
         } catch (Exception e) {
             logger.error("Ocurrió un error al listar los viajes: ", e);
@@ -42,7 +40,6 @@ public class ViajeControlador {
 
     @GetMapping("/{id}")
     public ResponseEntity<ViajeDTO> findbyId(@PathVariable Long id) {
-
         try {
             //Validates input data (id)
             if (id <= 0) {
@@ -63,7 +60,6 @@ public class ViajeControlador {
 
     @PostMapping
     public ResponseEntity<Viaje> save(@RequestBody ViajeDTO viajeDTO) {
-
         try {
             Viaje viajeGuardado = viajeService.save(viajeDTO);
             return ResponseEntity.status(HttpStatus.CREATED).body(viajeGuardado);
@@ -76,7 +72,6 @@ public class ViajeControlador {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable Long id) {
-
         try {
             //Obtenemos objeto a borrar en la bbdd
             ViajeDTO viaje = viajeService.findViajeById(id);

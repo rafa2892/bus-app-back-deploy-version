@@ -5,9 +5,10 @@ import com.bus.app.modelo.Historial;
 import java.util.List;
 import java.util.Optional;
 
-public interface RegistroHistorialService {
+public interface HistorialService {
    List<Historial> findAll();
-   Optional<Historial> findById(Long id);
    Historial save(Historial historial);
+   void delete(Long id);
+   Optional<Historial> findById(Long id);
    void parametrizarHistorial(Historial historial);
 }

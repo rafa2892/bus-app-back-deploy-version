@@ -7,13 +7,20 @@ public class Constantes {
 
     public final static String REGISTRO_VIAJE = "Nuevo viaje registrado";
     public final static Long REGISTRO_VIAJE_ID = 1L ;
-    public final static String REPARACION = "Reparación";
+    public final static String REPARACION = "Mantenimiento/Reparación";
     public final static Long REPARACION_ID = 2L ;
-    public final static String OTROS = "Otros";
+    public final static String OTROS = "Otros/Comentarios/Actividades";
     public final static Long OTROS_ID = 3L;
 
-    //Registro de actividades
+    /*Registro de actividades */
     public final static String ELIMINACION_CONDUCTOR = "Se ha eliminado un conductor";
+
+    //Tipos de actividades
+    public final static Map<String, Long> TIPOS_AUDIT = Map.of(
+            "POST", 1L,
+            "PUT", 2L,
+            "DELETE", 3L
+    );
 
     public static Map<Long,String> getTiposHistoriales() {
         Map<Long, String> datos = new HashMap<>();

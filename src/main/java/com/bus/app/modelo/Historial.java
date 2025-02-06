@@ -1,6 +1,7 @@
 package com.bus.app.modelo;
 
 
+import com.bus.app.tools.AuditableEntity;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -12,7 +13,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name="historial")
-public class Historial {
+public class Historial implements AuditableEntity  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,11 +29,11 @@ public class Historial {
     private String descripcionTipo;
 
     @JsonBackReference
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "carro_id")
     private Carro carro;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     @JoinColumn(name = "usuario_ID")
     private UserLogin userLogin;
 

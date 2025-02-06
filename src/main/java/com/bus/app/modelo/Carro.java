@@ -1,6 +1,7 @@
 package com.bus.app.modelo;
 
 import com.bus.app.DTO.ImagenDTO;
+import com.bus.app.tools.AuditableEntity;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -14,7 +15,7 @@ import java.util.List;
 @Entity
 @Table(name= "carros")
 
-public class Carro {
+public class Carro implements AuditableEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

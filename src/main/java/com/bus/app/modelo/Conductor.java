@@ -1,6 +1,7 @@
 package com.bus.app.modelo;
 
 
+import com.bus.app.tools.AuditableEntity;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +12,7 @@ import java.util.Date;
 @Setter
 @Entity
 @Table(name="conductores")
-public class Conductor {
+public class Conductor implements AuditableEntity  {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

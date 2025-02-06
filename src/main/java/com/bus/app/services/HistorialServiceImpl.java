@@ -2,7 +2,7 @@ package com.bus.app.services;
 
 import com.bus.app.constantes.Constantes;
 import com.bus.app.modelo.Historial;
-import com.bus.app.repositorio.RegistroHistorialRepositorio;
+import com.bus.app.repositorio.HistorialRepositorio;
 import com.bus.app.repositorio.UsuariosRepositorio;
 import com.bus.app.security.BusAppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,31 +13,36 @@ import java.util.List;
 import java.util.Optional;
 
 @Service
-public class RegistroHistorialServiceImpl implements RegistroHistorialService{
+public class HistorialServiceImpl implements HistorialService {
 
   @Autowired
-  RegistroHistorialRepositorio registroHistorialRepositorio;
+  HistorialRepositorio historialRepositorio;
 
   @Autowired
   private UsuariosRepositorio usuariosRepositorio;
 
   @Override
   public List<Historial> findAll() {
-    return registroHistorialRepositorio.findAll();
+    return historialRepositorio.findAll();
   }
 
   @Override
   public Optional<Historial> findById(Long id) {
-    return registroHistorialRepositorio.findById(id);
+    return historialRepositorio.findById(id);
   }
 
   @Override
   public Historial save(Historial historial) {
-    return registroHistorialRepositorio.save(historial);
+    return historialRepositorio.save(historial);
   }
 
   @Override
-  public void parametrizarHistorial(Historial historial) {
+  public void delete(Long id) {
+    historialRepositorio.deleteById(id);
+  }
+
+  @Override
+  public void  parametrizarHistorial(Historial historial) {
 
     historial.setDescripcionTipo(Constantes.getTiposHistoriales().get(historial.getIdTipo()));
     historial.setFechaAlta(new Date());

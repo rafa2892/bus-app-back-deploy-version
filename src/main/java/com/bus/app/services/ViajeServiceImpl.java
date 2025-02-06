@@ -30,7 +30,7 @@ public class ViajeServiceImpl implements ViajeService {
 
 
     @Autowired
-    private RegistroHistorialService registroHistorialService;
+    private HistorialService historialService;
 
     @Override
     public List<ViajeDTO> listAll() {
@@ -62,8 +62,8 @@ public class ViajeServiceImpl implements ViajeService {
             }else{
                 historial.setComentarios(Constantes.REGISTRO_VIAJE);
             }
-            registroHistorialService.parametrizarHistorial(historial);
-            registroHistorialService.save(historial);
+            historialService.parametrizarHistorial(historial);
+            historialService.save(historial);
         }
         return viajeGuardado;
     }
