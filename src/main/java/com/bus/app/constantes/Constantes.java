@@ -1,5 +1,8 @@
 package com.bus.app.constantes;
 
+import com.bus.app.tools.BusAppUtils;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +25,16 @@ public class Constantes {
             "POST", 1L,
             "PUT", 2L,
             "DELETE", 3L
+    );
+
+    public final static Map<String, String> TITULO_EXCEL_EXPORTACION = Map.of(
+            "viajes", "Lista servicios",
+            "carros", "Vehículos regitrados",
+            "conductores", "Conductores registrados",
+            "dailyMail", "Envío automatizado de correos, servicios del dia : "
+                    + BusAppUtils.fechaFormateada(new Date()),
+            "viajesPorFechas", "Servicios entre fechas: %s -- %s"
+
     );
 
     public static Map<Long,String> getTiposHistoriales() {

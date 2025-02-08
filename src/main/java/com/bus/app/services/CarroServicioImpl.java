@@ -9,10 +9,7 @@ import com.bus.app.repositorio.CarroRepositorio;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Service
 public class CarroServicioImpl implements CarroService {
@@ -45,6 +42,10 @@ public class CarroServicioImpl implements CarroService {
 
         if(carro.getPoliza() != null) {
             carro.getPoliza().setCarro(carro);
+        }
+        //Seteamos fecha de alta
+        if(carro.getId() == null) {
+            carro.setFechaAlta(new Date());
         }
 
         return carro;

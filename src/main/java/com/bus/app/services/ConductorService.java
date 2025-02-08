@@ -10,8 +10,6 @@ public interface ConductorService
 {
     public Conductor save(Conductor conductor);
     public List<Conductor> findAll();
-
     public void deleteById(Long id);
-
     Optional<Conductor> findById(Long id);
 }

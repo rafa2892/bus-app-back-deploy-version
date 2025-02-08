@@ -43,6 +43,9 @@ public class Carro implements AuditableEntity {
     @Column(name = "siguiente_cambio_aceite")
     private Date siguienteCambioAceite;
 
+    @Column(name = "fecha_alta")
+    private Date fechaAlta;
+
     @OneToOne(cascade = CascadeType.ALL)
     private TituloPropiedad tituloPropiedad;
 

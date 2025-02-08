@@ -1,7 +1,7 @@
 package com.bus.app.controller;
+
 import com.bus.app.DTO.ViajeDTO;
 import com.bus.app.modelo.Conductor;
-import com.bus.app.modelo.Viaje;
 import com.bus.app.repositorio.ViajeRepositorio;
 import com.bus.app.services.ConductorService;
 import com.bus.app.services.ViajeService;
@@ -23,11 +23,9 @@ public class ConductorControlador {
 
     @Autowired
     private ConductorService conductorService;
-
     @Autowired
     private ViajeRepositorio viajeRepositorio;
-
-    @Autowired
+     @Autowired
     private ViajeService viajeServicio;
 
     private static final Logger logger = LoggerFactory.getLogger(ConductorControlador.class);
