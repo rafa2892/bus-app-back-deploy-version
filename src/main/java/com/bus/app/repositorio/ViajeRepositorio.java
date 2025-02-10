@@ -26,4 +26,11 @@ public interface ViajeRepositorio extends JpaRepository<Viaje, Long>, JpaSpecifi
 
     List<Viaje> findByFechaOrderByFechaDesc(Date fecha);
 
+    List<Viaje> findByCarroIdOrderByFechaDesc(Long carroId);
+
+    long countByCarroId(Long carroId);
+
+
+
+
 }

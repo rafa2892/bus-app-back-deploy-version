@@ -114,6 +114,43 @@ public class ViajeControlador {
         }
     }
 
+    @GetMapping("byCarro/{id}")
+    public ResponseEntity<List<ViajeDTO>> listByCarroId(@PathVariable Long id) {
+        // Validates input data (id)
+        try {
+            if (id <= 0) {
+                return ResponseEntity.badRequest().body(null); // 400 Bad Request
+            }
+            List<ViajeDTO> viajes = viajeService.listByCarroId(id);
+
+            if (viajes.isEmpty()) {
+                return ResponseEntity.noContent().build(); // 204 No Content
+            }
+            return ResponseEntity.ok(viajes);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error al listar los viajes por conductor: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
+    }
+
+    @GetMapping("countByCarro/{id}")
+    public ResponseEntity<Long> countByCarroId(@PathVariable Long id) {
+        // Validates input data (id)
+        try {
+            if (id <= 0) {
+                return ResponseEntity.badRequest().body(null); // 400 Bad Request
+            }
+                Long c = viajeService.countByCarroId(id);
+            return ResponseEntity.ok(c);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error al listar los viajes por conductor: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
+    }
+
+
     /* Método para filtrar los viajes */
     @GetMapping("/filtrar")
     public  ResponseEntity<List<Viaje>> filtrarViajes(

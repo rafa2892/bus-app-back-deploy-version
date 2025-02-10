@@ -172,6 +172,22 @@ public class ViajeServiceImpl implements ViajeService {
         Specification<Viaje> spec = ViajeSpecification.filtrarViajes(numeroUnidad, conductorId,fechaDesde,fechaHasta);
         return viajeRepositorio.findAll(spec);
       }
+
+    @Override
+    public List<ViajeDTO> listByCarroId(Long id) {
+        List<Viaje> listViajeBD = viajeRepositorio.findByCarroIdOrderByFechaDesc(id);
+        List<ViajeDTO> viajeDTOList = new ArrayList<>();
+
+        for (Viaje viaje: listViajeBD) {
+            viajeDTOList.add(convertToViajeDTO(viaje));
+        }
+        return viajeDTOList;
     }
+
+    @Override
+    public long countByCarroId(Long carroId) {
+        return viajeRepositorio.countByCarroId(carroId);
+    }
+}
 
 

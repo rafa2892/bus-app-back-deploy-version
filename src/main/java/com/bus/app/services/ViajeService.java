@@ -15,6 +15,11 @@ public interface ViajeService {
     public Viaje convertToViaje(ViajeDTO viaje);
     public List<Viaje> filtrarViajes(String numeroUnidad, Long conductorId, String fechaDesde, String fechaHasta);
 
+    public List<ViajeDTO> listByCarroId(Long id);
+
+    long countByCarroId(Long carroId);
+
+
 
 
 

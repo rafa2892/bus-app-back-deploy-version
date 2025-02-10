@@ -68,4 +68,22 @@ public class HistorialServiceImpl implements HistorialService {
           historial.setComentarios("NO COMENTARIOS DISPONIBLE");
     }
   }
+
+  @Override
+  public Long countByCarroId(Long id) {
+    return historialRepositorio.countByCarroId(id);
+  }
+
+  @Override
+  public List<Historial> findBycarBetweenDates(Date fechaInicio, Date fechaFin, Long carroId) {
+    fechaInicio = BusAppUtils.ajustarFechaDiaEspecifico(fechaInicio, fechaFin).get("fechaDesde");
+    fechaFin = BusAppUtils.ajustarFechaDiaEspecifico(fechaInicio, fechaFin).get("fechaHasta");
+    return
+            historialRepositorio.findByCarroIdAndFechaAltaBetweenOrderByFechaAltaDesc(carroId, fechaInicio, fechaFin);
+  }
+
+  @Override
+  public List<Historial> findByCarroId(Long id) {
+    return historialRepositorio.findByCarroIdOrderByFechaAltaDesc(id);
+  }
 }

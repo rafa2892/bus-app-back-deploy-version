@@ -33,7 +33,7 @@ public class ExcelController {
                 HttpHeaders headers = new HttpHeaders();
 
                 // Configuramos el nombre del archivo en la cabecera
-                headers.setContentDispositionFormData("attachment", "excel-export-" + "tipo_".toLowerCase() + ".xlsx");
+                headers.setContentDispositionFormData("attachment", "excel-export-" + "tipo_"+ tipo.toLowerCase() + ".xlsx");
                 headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
 
                 return ResponseEntity.ok()

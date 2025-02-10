@@ -53,10 +53,11 @@ public class ExcelService {
         }
 
         /* ---- Obtenemos los valores de las fechas, según tipo ----*/
-        Map<String, Date> fechasAjustadas = setFormatDatesByType(tipo,fechaDesde,fechaHasta );
-
-        this.fechaInicio = fechasAjustadas.get("fechaDesde");
-        this.fechaHasta = fechasAjustadas.get("fechaHasta");
+        else {
+            Map<String, Date> fechasAjustadas = setFormatDatesByType(tipo,fechaDesde,fechaHasta);
+            this.fechaInicio = fechasAjustadas.get("fechaDesde");
+            this.fechaHasta = fechasAjustadas.get("fechaHasta");
+        }
 
         @SuppressWarnings("unchecked")
         List<T> datos = switch (tipo) {

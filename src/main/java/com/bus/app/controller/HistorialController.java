@@ -10,10 +10,13 @@ import com.bus.app.services.HistorialService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -99,6 +102,22 @@ public class HistorialController {
         }
     }
 
+    @GetMapping("/historial/countByCarro/{id}")
+    public ResponseEntity<Long> countByCarroId(@PathVariable Long id) {
+        try {
+            if (id <= 0) {
+                return ResponseEntity.badRequest().body(null); // 400 Bad Request
+            }
+            Long c = historialService.countByCarroId(id);
+            return ResponseEntity.ok(c);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error al listar los viajes por conductor: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(null);
+        }
+    }
+
+
     @GetMapping("/historial/tiposRegistroHistorial")
     public ResponseEntity<Map<Long,String>> getTipoRegistroHistorial() {
         try {
@@ -109,4 +128,28 @@ public class HistorialController {
         }
     }
 
+    @GetMapping("/historial/betweenDates/{id}")
+    public ResponseEntity<List<Historial>> getHistorialListBetweenDates(
+            @RequestParam(required = false) Date fechaInicio,
+            @RequestParam(required = false) Date fechaFin,
+            @PathVariable Long id) {
+        try {
+            List<Historial> historiales = historialService.findBycarBetweenDates(fechaInicio,fechaFin,id);
+            return ResponseEntity.ok(historiales);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error al obtener historiales por fecha: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/historial/byCarro/{id}")
+    public ResponseEntity<List<Historial>> getHistorialListByCarro(@PathVariable Long id) {
+        try {
+            List<Historial> historiales = historialService.findByCarroId(id);
+            return ResponseEntity.ok(historiales);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error al obtener historiales por fecha: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
 }

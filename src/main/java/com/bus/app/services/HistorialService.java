@@ -2,6 +2,7 @@ package com.bus.app.services;
 
 import com.bus.app.modelo.Historial;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,4 +12,8 @@ public interface HistorialService {
    void delete(Long id);
    Optional<Historial> findById(Long id);
    void parametrizarHistorial(Historial historial);
+   Long countByCarroId(Long id);
+   List<Historial> findBycarBetweenDates(Date fechaInicio, Date fechaFin, Long carroId);
+   List<Historial> findByCarroId(Long id);
+
 }
