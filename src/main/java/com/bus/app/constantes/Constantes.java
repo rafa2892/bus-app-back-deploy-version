@@ -33,7 +33,10 @@ public class Constantes {
             "conductores", "Conductores registrados",
             "dailyMail", "Envío automatizado de correos, servicios del dia : "
                     + BusAppUtils.fechaFormateada(new Date()),
-            "viajesPorFechas", "Servicios entre fechas: %s -- %s"
+            "viajesPorFechas", "Servicios entre fechas: %s -- %s",
+            "hoy", "Servicios fecha: %s ",
+            "ayer", "Servicios fecha: %s ",
+            "viajesDiaEspecifico", "Servicios fecha: %s "
 
     );
 

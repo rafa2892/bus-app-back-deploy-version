@@ -11,6 +11,7 @@ import com.bus.app.repositorio.ViajeRepositorio;
 import com.bus.app.tools.BusAppUtils;
 import com.bus.app.tools.specification.ViajeSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -170,7 +171,7 @@ public class ViajeServiceImpl implements ViajeService {
     public List<Viaje> filtrarViajes(String numeroUnidad, Long conductorId, String fechaDesde, String fechaHasta)  {
         // Usamos la Specification para obtener los viajes filtrados
         Specification<Viaje> spec = ViajeSpecification.filtrarViajes(numeroUnidad, conductorId,fechaDesde,fechaHasta);
-        return viajeRepositorio.findAll(spec);
+        return viajeRepositorio.findAll(spec, Sort.by(Sort.Direction.DESC, "fecha"));
       }
 
     @Override

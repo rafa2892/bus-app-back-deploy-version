@@ -14,6 +14,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.web.bind.annotation.*;
@@ -82,6 +83,19 @@ public class AuthenticationController {
         final String jwtRefreshed = jwtUtilService.generateToken(userDetails);
         return ResponseEntity.ok(new TokenInfo(jwtRefreshed));
     }
+
+    @GetMapping("/isAuthenticated")
+    public ResponseEntity<?> isAuthenticated() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+
+        if (authentication == null || !authentication.isAuthenticated() || "anonymousUser".equals(authentication.getPrincipal())) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Usuario no autenticado");
+        }
+
+        return ResponseEntity.ok("Usuario autenticado: " + authentication.getName());
+    }
+
+
     @GetMapping("/authenticationTest")
     public ResponseEntity<String> prueba() {
         return ResponseEntity.ok("Estas autenticado correctamente");

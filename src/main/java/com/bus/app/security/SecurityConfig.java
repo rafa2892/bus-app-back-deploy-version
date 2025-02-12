@@ -28,6 +28,7 @@ public class SecurityConfig {
                         auth
                                 .requestMatchers("api/v1/login").permitAll()
                                 .requestMatchers("api/v1/refresh").permitAll()
+                                .requestMatchers("api/v1/isAuthenticated").permitAll()
 //                                .requestMatchers("api/v1/publico/**").permitAll()
                              /*   .requestMatchers("api/v1/prueba").permitAll()*/
                                // .anyRequest().permitAll()

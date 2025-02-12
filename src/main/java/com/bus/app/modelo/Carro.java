@@ -65,6 +65,7 @@ public class Carro implements AuditableEntity {
     private List<ImagenDTO> imagenes;  // Lista de imágenes (byte arrays)
 
     @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OrderBy("fechaAlta DESC")  // Ordena por fecha de manera descendente
     private List<Historial> registroHistorial;
 
 

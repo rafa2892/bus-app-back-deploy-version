@@ -127,6 +127,23 @@ public class ExcelService {
                     BusAppUtils.fechaFormateada(this.fechaHasta));
         }
 
+        if ("hoy".equals(tipo)) {
+            titulo = String.format(titulo,
+                    BusAppUtils.fechaFormateada(this.fechaInicio));
+        }
+
+        if ("ayer".equals(tipo)) {
+            titulo = String.format(titulo,
+                    BusAppUtils.fechaFormateada(this.fechaInicio));
+        }
+
+        if ("viajesDiaEspecifico".equals(tipo)) {
+            titulo = String.format(titulo,
+                    BusAppUtils.fechaFormateada(this.fechaInicio));
+        }
+
+
+
         Cell tituloCell = tituloRow.createCell(0);
         tituloCell.setCellValue(titulo); // Texto del título
         tituloCell.setCellStyle(getTitleCellStyle(workbook)); // Aplica el estilo del título
