@@ -33,9 +33,8 @@ public class Historial implements AuditableEntity  {
     @JoinColumn(name = "carro_id")
     private Carro carro;
 
-    @ManyToOne
-    @JoinColumn(name = "usuario_ID")
-    private UserLogin userLogin;
+    @JoinColumn(name = "usuario")
+    private String byUser;
 
     @JoinColumn(name="fecha_alta")
     private Date fechaAlta;

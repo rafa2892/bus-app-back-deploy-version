@@ -51,7 +51,6 @@ public class ViajeControlador {
         }
     }
 
-
     @GetMapping("/{id}")
     public ResponseEntity<ViajeDTO> findbyId(@PathVariable Long id) {
         try {
@@ -106,7 +105,6 @@ public class ViajeControlador {
                     .body(null);
         }
     }
-
 
     @GetMapping("conductor/{id}")
     public ResponseEntity<List<ViajeDTO>> listByConductorId(@PathVariable Long id) {
@@ -190,7 +188,7 @@ public class ViajeControlador {
     }
 
 
-    /* Método para filtrar los viajes */
+    /* Método para filtrar los viajes sin paginación */
     @GetMapping("/filtrar")
     public  ResponseEntity<List<Viaje>> listViajesFiltrados(
             @RequestParam(required = false) String numeroUnidad,

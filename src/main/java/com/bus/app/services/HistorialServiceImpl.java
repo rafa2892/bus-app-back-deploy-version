@@ -60,7 +60,7 @@ public class HistorialServiceImpl implements HistorialService {
     historial.setFechaAlta(new Date());
 
     String user = BusAppUtils.getUserName();
-    historial.setUserLogin(usuariosRepositorio.findByUsu(user));
+    historial.setByUser(user);
 
     if (historial.getComentarios() == null ||
           historial.getComentarios().isEmpty() ||

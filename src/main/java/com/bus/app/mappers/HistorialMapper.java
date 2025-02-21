@@ -14,7 +14,7 @@ public class HistorialMapper {
         dto.setFechaAlta(historial.getFechaAlta());
         dto.setId(historial.getId());
         dto.setIdTipo(historial.getIdTipo());
-        dto.setUserLogin(historial.getUserLogin());
+        dto.setByUser(historial.getByUser());
         return dto;
     }
     public static Historial toEntity(HistorialDTO dto) {
@@ -26,7 +26,7 @@ public class HistorialMapper {
         historial.setFechaAlta(dto.getFechaAlta());
         historial.setId(dto.getId());
         historial.setIdTipo(dto.getIdTipo());
-        historial.setUserLogin(dto.getUserLogin());
+        historial.setByUser(dto.getByUser());
         return historial;
     }
 
