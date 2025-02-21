@@ -6,6 +6,7 @@ import com.bus.app.services.ViajeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,6 +38,19 @@ public class ViajeControlador {
                     .body(null);
         }
     }
+
+    @GetMapping("/pageable")
+    public ResponseEntity<Page<ViajeDTO>> listAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            Page<ViajeDTO> viajes = viajeService.listAllPageable(page, size);
+            return ResponseEntity.ok(viajes);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 
     @GetMapping("/{id}")
     public ResponseEntity<ViajeDTO> findbyId(@PathVariable Long id) {
@@ -150,10 +164,35 @@ public class ViajeControlador {
         }
     }
 
+    // Backend: Controlador para filtrar viajes con paginación
+    @GetMapping("/filtrar-paginado")
+    public ResponseEntity<Page<ViajeDTO>> listViajesFiltrados(
+            @RequestParam(required = false) String numeroUnidad,
+            @RequestParam(required = false) Long conductorId,
+            @RequestParam(required = false) String fechaDesde,
+            @RequestParam(required = false) String fechaHasta,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        try {
+            // Llamamos al servicio con los filtros y parámetros de paginación
+            Page<ViajeDTO> viajes = viajeService.filtrarViajesPaginados(
+                    numeroUnidad, conductorId, fechaDesde, fechaHasta, page, size);
+
+            if (viajes == null || viajes.isEmpty()) {
+                return ResponseEntity.notFound().build();
+            }
+
+            return ResponseEntity.ok(viajes);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 
     /* Método para filtrar los viajes */
     @GetMapping("/filtrar")
-    public  ResponseEntity<List<Viaje>> filtrarViajes(
+    public  ResponseEntity<List<Viaje>> listViajesFiltrados(
             @RequestParam(required = false) String numeroUnidad,
             @RequestParam(required = false) Long conductorId,
             @RequestParam(required = false) String fechaDesde,

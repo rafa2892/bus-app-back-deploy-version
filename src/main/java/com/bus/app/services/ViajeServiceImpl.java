@@ -6,11 +6,13 @@ import com.bus.app.modelo.Carro;
 import com.bus.app.modelo.Historial;
 import com.bus.app.modelo.Viaje;
 import com.bus.app.repositorio.CarroRepositorio;
-import com.bus.app.repositorio.UsuariosRepositorio;
 import com.bus.app.repositorio.ViajeRepositorio;
 import com.bus.app.tools.BusAppUtils;
 import com.bus.app.tools.specification.ViajeSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
@@ -175,6 +177,20 @@ public class ViajeServiceImpl implements ViajeService {
       }
 
     @Override
+    // Backend: Servicio para filtrar viajes con paginación
+    public Page<ViajeDTO> filtrarViajesPaginados(
+            String numeroUnidad, Long conductorId, String fechaDesde, String fechaHasta, int page, int size) {
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "fecha"));
+
+        Specification<Viaje> spec = ViajeSpecification.filtrarViajes(numeroUnidad, conductorId, fechaDesde, fechaHasta);
+
+        return viajeRepositorio.findAll(spec, pageable).map(this::convertToViajeDTO);
+    }
+
+
+
+    @Override
     public List<ViajeDTO> listByCarroId(Long id) {
         List<Viaje> listViajeBD = viajeRepositorio.findByCarroIdOrderByFechaDesc(id);
         List<ViajeDTO> viajeDTOList = new ArrayList<>();
@@ -184,6 +200,13 @@ public class ViajeServiceImpl implements ViajeService {
         }
         return viajeDTOList;
     }
+
+    @Override
+    public Page<ViajeDTO> listAllPageable(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("fecha").descending());
+        return viajeRepositorio.findAll(pageable).map(this::convertToViajeDTO);
+    }
+
 
     @Override
     public long countByCarroId(Long carroId) {
