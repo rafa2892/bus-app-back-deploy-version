@@ -8,6 +8,10 @@ import com.bus.app.repositorio.HistorialRepositorio;
 import com.bus.app.repositorio.UsuariosRepositorio;
 import com.bus.app.tools.BusAppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -85,5 +89,11 @@ public class HistorialServiceImpl implements HistorialService {
   @Override
   public List<Historial> findByCarroId(Long id) {
     return historialRepositorio.findByCarroIdOrderByFechaAltaDesc(id);
+  }
+
+  @Override
+  public Page<Historial> listByCarroIdPageable(Long id, int page, int size) {
+    Pageable pageable = PageRequest.of(page, size, Sort.by("fechaAlta").descending());
+    return historialRepositorio.findByCarroId(id, pageable);
   }
 }

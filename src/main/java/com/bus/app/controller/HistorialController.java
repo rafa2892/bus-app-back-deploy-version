@@ -5,14 +5,14 @@ import com.bus.app.constantes.Constantes;
 import com.bus.app.mappers.HistorialMapper;
 import com.bus.app.modelo.Carro;
 import com.bus.app.modelo.Historial;
+import com.bus.app.modelo.RegistroActividad;
 import com.bus.app.services.CarroService;
 import com.bus.app.services.HistorialService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -152,4 +152,20 @@ public class HistorialController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/historial/byCarroPageable/{id}")
+    public ResponseEntity<Page<Historial>> getHistorialListByCarroPageable(
+            @PathVariable Long id,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        try {
+            Page<Historial> historiales = historialService.listByCarroIdPageable(id,page, size);
+            return ResponseEntity.ok(historiales);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error al obtener historiales por fecha: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 }
