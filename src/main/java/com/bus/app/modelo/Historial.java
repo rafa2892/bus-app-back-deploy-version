@@ -41,5 +41,7 @@ public class Historial implements AuditableEntity  {
 
     private String dsHistorial;
 
+    private Long viajeId;
+
 
 }

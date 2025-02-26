@@ -187,7 +187,6 @@ public class ViajeControlador {
         }
     }
 
-
     /* Método para filtrar los viajes sin paginación */
     @GetMapping("/filtrar")
     public  ResponseEntity<List<Viaje>> listViajesFiltrados(

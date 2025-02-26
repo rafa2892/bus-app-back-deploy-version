@@ -59,6 +59,7 @@ public class ViajeServiceImpl implements ViajeService {
             Historial historial = new Historial();
             historial.setIdTipo(Constantes.REGISTRO_VIAJE_ID);
             historial.setCarro(viaje.getCarro());
+            historial.setViajeId(viaje.getId());
 
             if (viajeDTO.getComentarios() != null) {
                 historial.setComentarios(viajeDTO.getComentarios());
