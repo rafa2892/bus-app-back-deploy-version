@@ -46,6 +46,17 @@ public class RegistrosController {
         }
     }
 
+    /**
+     * Obtiene una lista paginada de los registros de auditoría.
+     *
+     * Este método permite obtener los registros de auditoría en un formato paginado. El número de página y el tamaño
+     * de la página son parámetros que se pasan en la solicitud. Si no se proporcionan, el número de página será 0
+     * (la primera página) y el tamaño de la página será 20 por defecto.
+     *
+     * @param page El número de la página que se desea obtener (comienza desde 0).
+     * @param size El número de registros por página.
+     * @return ResponseEntity con una página de registros de auditoría o un mensaje de error en caso de fallar.
+     */
     @GetMapping("/pageable")
     public ResponseEntity<Page<RegistroActividad>> listAll(
             @RequestParam(defaultValue = "0") int page,
