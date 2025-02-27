@@ -25,4 +25,11 @@ public interface HistorialService {
    List<Historial> findByCarroId(Long id);
 
    Page<Historial> listByCarroIdPageable(Long id,int page,int size);
+
+   boolean existsByViajeId(Long viajeId);
+
+   void deleteHistorialByViajeId(Long viajeId);
+
+   Optional<Historial> findByViajeId(Long viajeId);
+
 }

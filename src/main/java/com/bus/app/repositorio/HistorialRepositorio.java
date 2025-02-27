@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 public interface HistorialRepositorio extends JpaRepository<Historial,Long> {
 
@@ -18,4 +19,12 @@ public interface HistorialRepositorio extends JpaRepository<Historial,Long> {
     List<Historial> findByCarroIdOrderByFechaAltaDesc(Long carroId);
 
     Page<Historial> findByCarroId(Long carroId, Pageable pageable);
+
+    boolean existsByViajeId(Long viajeId);
+
+    void deleteByViajeId(Long viajeId); // Method to delete history by trip ID
+
+    Optional<Historial> findByViajeId(Long viajeId);
+
+
 }

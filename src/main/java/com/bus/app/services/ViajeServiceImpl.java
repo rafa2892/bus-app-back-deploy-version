@@ -16,6 +16,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.ArrayList;
@@ -73,12 +74,23 @@ public class ViajeServiceImpl implements ViajeService {
     }
 
     @Override
+    @Transactional
     public void delete(Long id) {
+
         Viaje viaje = new Viaje();
         Optional<Viaje> o = viajeRepositorio.findById(id);
 
         if(o.isPresent()){
             viaje = o.get();
+            boolean existe = historialService.existsByViajeId(viaje.getId());
+
+            if(existe){
+                Optional<Historial> h = historialService.findByViajeId(viaje.getId());
+                if(h.isPresent()) {
+                    historialService.deleteHistorialByViajeId(viaje.getId());
+                    auditoriaService.buildDeleteAudit(h.get());
+                }
+            }
             viajeRepositorio.delete(viaje);
         }
         auditoriaService.buildDeleteAudit(viaje);

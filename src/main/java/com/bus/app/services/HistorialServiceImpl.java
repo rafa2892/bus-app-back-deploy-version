@@ -2,10 +2,7 @@ package com.bus.app.services;
 
 import com.bus.app.constantes.Constantes;
 import com.bus.app.modelo.Historial;
-import com.bus.app.modelo.RegistroActividad;
-import com.bus.app.modelo.UserLogin;
 import com.bus.app.repositorio.HistorialRepositorio;
-import com.bus.app.repositorio.UsuariosRepositorio;
 import com.bus.app.tools.BusAppUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -23,8 +20,6 @@ public class HistorialServiceImpl implements HistorialService {
 
   @Autowired
   HistorialRepositorio historialRepositorio;
-  @Autowired
-  private UsuariosRepositorio usuariosRepositorio;
 
   @Autowired
   private AuditoriaService auditoriaService;
@@ -53,7 +48,7 @@ public class HistorialServiceImpl implements HistorialService {
       historialEliminado = ho.get();
       historialRepositorio.deleteById(id);
     }
-    // Se borra la entidad y realizamos auditoria de actividad
+    // The entity is deleted, and activity auditing is performed
     auditoriaService.buildDeleteAudit(historialEliminado);
   }
 
@@ -95,5 +90,20 @@ public class HistorialServiceImpl implements HistorialService {
   public Page<Historial> listByCarroIdPageable(Long id, int page, int size) {
     Pageable pageable = PageRequest.of(page, size, Sort.by("fechaAlta").descending());
     return historialRepositorio.findByCarroId(id, pageable);
+  }
+
+  @Override
+  public boolean existsByViajeId(Long viajeId) {
+    return historialRepositorio.existsByViajeId(viajeId);
+  }
+
+  @Override
+  public void deleteHistorialByViajeId(Long viajeId) {
+    historialRepositorio.deleteByViajeId(viajeId);
+  }
+
+  @Override
+  public Optional<Historial> findByViajeId(Long viajeId) {
+    return historialRepositorio.findByViajeId(viajeId);
   }
 }

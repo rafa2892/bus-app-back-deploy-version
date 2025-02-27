@@ -100,7 +100,7 @@ public class ViajeControlador {
             viajeService.delete(id);
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Se ha borrado satisfactoriamente la entidad");
         } catch (Exception e) {
-            logger.error("Ocurrió un error al guardar el viaje: ", e);
+            logger.error("Ocurrió un error al borrar el viaje: ", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(null);
         }
@@ -162,7 +162,7 @@ public class ViajeControlador {
         }
     }
 
-    // Backend: Controlador para filtrar viajes con paginación
+    /* Method to filter services with pagination */
     @GetMapping("/filtrar-paginado")
     public ResponseEntity<Page<ViajeDTO>> listViajesFiltrados(
             @RequestParam(required = false) String numeroUnidad,
@@ -173,7 +173,6 @@ public class ViajeControlador {
             @RequestParam(defaultValue = "10") int size) {
 
         try {
-            // Llamamos al servicio con los filtros y parámetros de paginación
             Page<ViajeDTO> viajes = viajeService.filtrarViajesPaginados(
                     numeroUnidad, conductorId, fechaDesde, fechaHasta, page, size);
 
@@ -187,7 +186,7 @@ public class ViajeControlador {
         }
     }
 
-    /* Método para filtrar los viajes sin paginación */
+    /* Method to filter services without pagination */
     @GetMapping("/filtrar")
     public  ResponseEntity<List<Viaje>> listViajesFiltrados(
             @RequestParam(required = false) String numeroUnidad,
@@ -196,7 +195,7 @@ public class ViajeControlador {
             @RequestParam(required = false) String fechaHasta) {
 
         try {
-            // Llamamos al servicio para filtrar los viajes
+
             List<Viaje> viajes = viajeService.filtrarViajes(numeroUnidad, conductorId, fechaDesde, fechaHasta);
             if (viajes == null || viajes.isEmpty()) {
                 return ResponseEntity.notFound().build();
