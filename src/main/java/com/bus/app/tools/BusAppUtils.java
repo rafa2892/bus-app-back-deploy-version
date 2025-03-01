@@ -60,7 +60,7 @@ public class BusAppUtils {
         return calendar.getTime();  // Devolver la fecha ajustada
     }
 
-    public static Map<String, Date> ajustarFechaDiaEspecifico(Date fechaDesde, Date fechaHasta) {
+    public static Map<String, Date> ajustarFechaDesdeHasta(Date fechaDesde, Date fechaHasta) {
 
         Calendar calendar = Calendar.getInstance();
         Map<String, Date> fechasAjustadas = new HashMap<>();

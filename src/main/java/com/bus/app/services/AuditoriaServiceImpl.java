@@ -59,7 +59,7 @@ public class AuditoriaServiceImpl implements AuditoriaService {
     @Override
     public Page<RegistroActividad> filtrarAuditBetweenDates(int page, int size, Date fechaDesde, Date fechaHasta) {
 
-        Map<String, Date> fechasAjustadas = BusAppUtils.ajustarFechaDiaEspecifico(fechaDesde, fechaHasta);
+        Map<String, Date> fechasAjustadas = BusAppUtils.ajustarFechaDesdeHasta(fechaDesde, fechaHasta);
 
         fechaDesde = fechasAjustadas.get("fechaDesde");
         fechaHasta = fechasAjustadas.get("fechaHasta");

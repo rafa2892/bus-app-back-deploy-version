@@ -20,7 +20,7 @@ public interface HistorialService {
 
    Long countByCarroId(Long id);
 
-   List<Historial> findBycarBetweenDates(Date fechaInicio, Date fechaFin, Long carroId);
+   Page<Historial> findBycarBetweenDates(Long carroId, int page, int size,Date fechaDesde, Date fechaHasta);
 
    List<Historial> findByCarroId(Long id);
 

@@ -91,18 +91,18 @@ public class ExcelService {
         Map<String, Date> fechasAjustadas = new HashMap<>();
 
         if(tipo.equalsIgnoreCase("viajesDiaEspecifico")) {
-            fechasAjustadas = BusAppUtils.ajustarFechaDiaEspecifico(fechaDesde, fechaHasta);
+            fechasAjustadas = BusAppUtils.ajustarFechaDesdeHasta(fechaDesde, fechaHasta);
         }
 
         if(tipo.equalsIgnoreCase("hoy")) {
-            fechasAjustadas = BusAppUtils.ajustarFechaDiaEspecifico(new Date(), new Date());
+            fechasAjustadas = BusAppUtils.ajustarFechaDesdeHasta(new Date(), new Date());
         }
 
         if(tipo.equalsIgnoreCase("ayer")) {
             LocalDate ayer = LocalDate.now().minusDays(1);
             Date ayerInicioDate = Date.from(ayer.atStartOfDay(ZoneId.systemDefault()).toInstant());
             Date ayerHastaDate = Date.from(ayer.atStartOfDay(ZoneId.systemDefault()).toInstant());
-            fechasAjustadas = BusAppUtils.ajustarFechaDiaEspecifico(ayerInicioDate, ayerHastaDate);
+            fechasAjustadas = BusAppUtils.ajustarFechaDesdeHasta(ayerInicioDate, ayerHastaDate);
         }
         return fechasAjustadas;
     }

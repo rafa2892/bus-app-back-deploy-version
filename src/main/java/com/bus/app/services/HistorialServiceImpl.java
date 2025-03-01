@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 @Service
@@ -74,11 +75,17 @@ public class HistorialServiceImpl implements HistorialService {
   }
 
   @Override
-  public List<Historial> findBycarBetweenDates(Date fechaInicio, Date fechaFin, Long carroId) {
-    fechaInicio = BusAppUtils.ajustarFechaDiaEspecifico(fechaInicio, fechaFin).get("fechaDesde");
-    fechaFin = BusAppUtils.ajustarFechaDiaEspecifico(fechaInicio, fechaFin).get("fechaHasta");
+  public Page<Historial> findBycarBetweenDates(Long carroId, int page, int size, Date fechaDesde, Date fechaHasta) {
+
+    Map<String, Date> fechasAjustadas = BusAppUtils.ajustarFechaDesdeHasta(fechaDesde, fechaHasta);
+
+    fechaDesde = fechasAjustadas.get("fechaDesde");
+    fechaHasta = fechasAjustadas.get("fechaHasta");
+
+    Pageable pageable = PageRequest.of(page, size, Sort.by("fechaAlta").descending());
+
     return
-            historialRepositorio.findByCarroIdAndFechaAltaBetweenOrderByFechaAltaDesc(carroId, fechaInicio, fechaFin);
+            historialRepositorio.findByCarroIdAndFechaAltaBetweenOrderByFechaAltaDesc(carroId, fechaDesde, fechaHasta,pageable);
   }
 
   @Override

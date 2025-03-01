@@ -5,7 +5,6 @@ import com.bus.app.constantes.Constantes;
 import com.bus.app.mappers.HistorialMapper;
 import com.bus.app.modelo.Carro;
 import com.bus.app.modelo.Historial;
-import com.bus.app.modelo.RegistroActividad;
 import com.bus.app.services.CarroService;
 import com.bus.app.services.HistorialService;
 import org.apache.logging.log4j.LogManager;
@@ -126,12 +125,14 @@ public class HistorialController {
     }
 
     @GetMapping("/historial/betweenDates/{id}")
-    public ResponseEntity<List<Historial>> getHistorialListBetweenDates(
+    public ResponseEntity<Page<Historial>> getHistorialListBetweenDatesPageable(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
             @RequestParam(required = false) Date fechaInicio,
             @RequestParam(required = false) Date fechaFin,
             @PathVariable Long id) {
         try {
-            List<Historial> historiales = historialService.findBycarBetweenDates(fechaInicio,fechaFin,id);
+            Page<Historial> historiales = historialService.findBycarBetweenDates(id,page,size,fechaInicio,fechaFin);
             return ResponseEntity.ok(historiales);
         } catch (Exception e) {
             logger.error("Ocurrió un error al obtener historiales por fecha: ", e);
