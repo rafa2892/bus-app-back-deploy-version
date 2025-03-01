@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class AuditoriaServiceImpl implements AuditoriaService {
@@ -53,6 +54,20 @@ public class AuditoriaServiceImpl implements AuditoriaService {
     public Page<RegistroActividad> listAllPageable(int page, int size) {
         Pageable pageable = PageRequest.of(page, size, Sort.by("fecha").descending());
         return auditRepo.findAll(pageable);
+    }
+
+    @Override
+    public Page<RegistroActividad> filtrarAuditBetweenDates(int page, int size, Date fechaDesde, Date fechaHasta) {
+
+        Map<String, Date> fechasAjustadas = BusAppUtils.ajustarFechaDiaEspecifico(fechaDesde, fechaHasta);
+
+        fechaDesde = fechasAjustadas.get("fechaDesde");
+        fechaHasta = fechasAjustadas.get("fechaHasta");
+
+        Pageable pageable = PageRequest.of(page, size, Sort.by("fecha").descending());
+
+        // Filtrar por las fechas ajustadas
+        return auditRepo.findByFechaBetween(fechaDesde, fechaHasta, pageable);
     }
 
 }

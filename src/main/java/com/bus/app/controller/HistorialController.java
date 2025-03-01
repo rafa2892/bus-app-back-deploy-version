@@ -51,8 +51,6 @@ public class HistorialController {
         }
     }
 
-
-
     @PostMapping("/historial")
     public ResponseEntity<Historial> saveHistorial(@RequestBody HistorialDTO historialDTO) {
         try {
@@ -76,7 +74,6 @@ public class HistorialController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
-
 
     @DeleteMapping("/historial/{id}")
     public ResponseEntity<Object> deleteHistorial(@PathVariable Long id) {

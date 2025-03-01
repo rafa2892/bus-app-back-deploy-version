@@ -195,7 +195,6 @@ public class ViajeServiceImpl implements ViajeService {
             String numeroUnidad, Long conductorId, String fechaDesde, String fechaHasta, int page, int size) {
 
         Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "fecha"));
-
         Specification<Viaje> spec = ViajeSpecification.filtrarViajes(numeroUnidad, conductorId, fechaDesde, fechaHasta);
 
         return viajeRepositorio.findAll(spec, pageable).map(this::convertToViajeDTO);

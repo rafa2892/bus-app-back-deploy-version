@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -68,6 +69,29 @@ public class RegistrosController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
+
+    @GetMapping("/betweenDates")
+    public ResponseEntity<Page<RegistroActividad>> getAuditsBetweenDates(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "20") int size,
+            @RequestParam(required = false) Date fechaInicio,
+            @RequestParam(required = false) Date fechaFin) {
+
+        try {
+            // No necesitamos convertir las fechas, solo verificamos si están presentes
+            Page<RegistroActividad> registrosAud = auditoriaService.filtrarAuditBetweenDates(page, size, fechaInicio, fechaFin);
+
+            if (registrosAud.isEmpty()) {
+                return ResponseEntity.noContent().build();
+            }
+
+            return ResponseEntity.ok(registrosAud);
+        } catch (Exception e) {
+            logger.error("Error al obtener registros de auditoría entre fechas", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
 
 
 }
