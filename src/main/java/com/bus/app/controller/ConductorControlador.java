@@ -8,6 +8,7 @@ import com.bus.app.services.ViajeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,14 +26,38 @@ public class ConductorControlador {
     private ConductorService conductorService;
     @Autowired
     private ViajeRepositorio viajeRepositorio;
-     @Autowired
+    @Autowired
     private ViajeService viajeServicio;
 
     private static final Logger logger = LoggerFactory.getLogger(ConductorControlador.class);
 
     @GetMapping
-    public List<Conductor> listAll() {
-        return conductorService.findAll();
+    public ResponseEntity<Page<Conductor>> listAll(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String orderBy
+            ) {
+        try {
+            Page<Conductor> listaConductores = conductorService.findAll(page,size,orderBy);
+            return ResponseEntity.ok(listaConductores);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/filter-pageable")
+    public  ResponseEntity<Page<Conductor>> listAllFilteredPageable(
+            @RequestParam(required = false) String nombre,
+            @RequestParam(required = false) String apellido,
+            @RequestParam(required = false) String dni,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+        try {
+            Page<Conductor> listaConductores =   conductorService.obtenerConductoresConFiltro(nombre, apellido, dni, page, size);
+            return ResponseEntity.ok(listaConductores);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     @GetMapping("/{id}")

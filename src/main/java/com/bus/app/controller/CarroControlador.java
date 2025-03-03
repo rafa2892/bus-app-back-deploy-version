@@ -49,6 +49,7 @@ public class CarroControlador {
                 .toList();
     }
 
+
     @GetMapping("/carros/tipoVehiculos")
     public List<TipoVehiculo> listAllTipoVehiculos() {
         return tipoVehiculoServicio.findAll();
