@@ -2,6 +2,9 @@ package com.bus.app.tools;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 
@@ -86,6 +89,28 @@ public class BusAppUtils {
         fechasAjustadas.put("fechaHasta", calendar.getTime());
 
         return fechasAjustadas;
+    }
+
+
+    /**
+     * Construye un objeto Pageable con paginación y ordenamiento.
+     *
+     * @param page    Número de página.
+     * @param size    Tamaño de la página.
+     * @param orderBy Campo por el que se ordenará (formato "campo-asc/desc").
+     * @return Objeto Pageable con la configuración adecuada.
+     */
+    public static Pageable buildPagination(int page, int size, String orderBy) {
+        if (orderBy != null && !orderBy.isEmpty()) {
+            String[] parts = orderBy.split("-"); // Separar por "-"
+            if (parts.length == 2) {
+                String field = parts[0]; // Atributo para ordenar
+                Sort.Direction direction = parts[1].equalsIgnoreCase("desc") ?
+                        Sort.Direction.DESC : Sort.Direction.ASC;
+                return PageRequest.of(page, size, Sort.by(direction, field));
+            }
+        }
+        return PageRequest.of(page, size); // Sin orden si no hay entrada válida
     }
 
 }

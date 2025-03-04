@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Date;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -18,4 +20,5 @@ public class CarroListaDTO {
     private Long consumo;
     private String tipoVehiculo;
     private Long numeroUnidad;
+    private Date fechaAlta;
 }

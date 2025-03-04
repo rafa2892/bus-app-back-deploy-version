@@ -35,8 +35,8 @@ public class ConductorControlador {
     public ResponseEntity<Page<Conductor>> listAll(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(required = false) String orderBy
-            ) {
+            @RequestParam(required = false) String orderBy) {
+
         try {
             Page<Conductor> listaConductores = conductorService.findAll(page,size,orderBy);
             return ResponseEntity.ok(listaConductores);
@@ -51,9 +51,10 @@ public class ConductorControlador {
             @RequestParam(required = false) String apellido,
             @RequestParam(required = false) String dni,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(required = false) String orderBy) {
         try {
-            Page<Conductor> listaConductores =   conductorService.obtenerConductoresConFiltro(nombre, apellido, dni, page, size);
+            Page<Conductor> listaConductores =   conductorService.obtenerConductoresConFiltro(nombre, apellido, dni, page, size, orderBy);
             return ResponseEntity.ok(listaConductores);
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);

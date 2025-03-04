@@ -2,30 +2,44 @@ package com.bus.app.services;
 
 
 import com.bus.app.DTO.CarroDTO;
+import com.bus.app.DTO.CarroListaDTO;
 import com.bus.app.DTO.ImagenDTO;
 import com.bus.app.modelo.Carro;
 import com.bus.app.modelo.Imagen;
 import com.bus.app.repositorio.CarroRepositorio;
+import com.bus.app.tools.specification.CarroSpecification;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+
+import static com.bus.app.tools.BusAppUtils.buildPagination;
 
 @Service
 public class CarroServicioImpl implements CarroService {
 
 
     @Autowired
-    private CarroRepositorio carrosRepositorio;
+    private CarroRepositorio carroRepositorio;
 
     @Autowired
     private AuditoriaService auditoriaService;
+
+    @Override
+    public Page<Carro> findAll(int page, int size, String orderBy) {
+        Pageable pageable = buildPagination(page,size,orderBy);
+        return carroRepositorio.findAll(pageable);
+    }
 
 
     @Override
     public Carro save(Carro carro) {
         Carro carroGuardar = setCarroProperties(carro);
-        return carrosRepositorio.save(carroGuardar);
+        return carroRepositorio.save(carroGuardar);
     }
 
     private Carro setCarroProperties(Carro carro) {
@@ -53,7 +67,7 @@ public class CarroServicioImpl implements CarroService {
 
     @Override
     public Carro findById(Long id) {
-        Optional<Carro> carroBD = carrosRepositorio.findById(id);
+        Optional<Carro> carroBD = carroRepositorio.findById(id);
         Carro carro = null;
 
         if(carroBD.isPresent()) {
@@ -66,11 +80,11 @@ public class CarroServicioImpl implements CarroService {
     @Override
     public void delete(Long id) {
         Carro carro = null;
-        Optional<Carro> co = carrosRepositorio.findById(id);
+        Optional<Carro> co = carroRepositorio.findById(id);
 
         if(co.isPresent()) {
             carro = co.get();
-            carrosRepositorio.delete(carro);
+            carroRepositorio.delete(carro);
         }
         //Creamos auditoria de eliminación
         auditoriaService.buildDeleteAudit(carro);
@@ -78,7 +92,28 @@ public class CarroServicioImpl implements CarroService {
 
     @Override
     public boolean existsByNumeroUnidad(Long numeroUnidad) {
-        return carrosRepositorio.existsByNumeroUnidad(numeroUnidad);
+        return carroRepositorio.existsByNumeroUnidad(numeroUnidad);
+    }
+
+    @Override
+    public Page<CarroListaDTO> listFilteredPageable
+            (int page, int size, String marca, String modelo, Long anyo, Long numeroUnidad, String orderBy) {
+
+        Pageable pageable = buildPagination(page,size,orderBy);
+        Specification<Carro> specification = CarroSpecification.filtrarCarros(marca, modelo, anyo, numeroUnidad);
+        Page<Carro> c = carroRepositorio.findAll(specification, pageable);
+
+        // Mapear el contenido de la página (carros) a DTOs
+        return  c.map(carro -> new CarroListaDTO(
+                carro.getId(),
+                carro.getModelo(),
+                carro.getMarca(),
+                carro.getAnyo(),
+                carro.getConsumo(),
+                carro.getTipoVehiculo(),
+                carro.getNumeroUnidad(),
+                carro.getFechaAlta()
+        ));
     }
 
     /**
@@ -142,7 +177,7 @@ public class CarroServicioImpl implements CarroService {
                     return imagen;
                 }).toList();
 
-                Optional<Carro> o = carrosRepositorio.findById(carro.getId());
+                Optional<Carro> o = carroRepositorio.findById(carro.getId());
                 Carro cbd = new Carro();
 
                 if(o.isPresent()) {cbd = o.get();}

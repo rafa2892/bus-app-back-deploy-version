@@ -3,6 +3,7 @@ package com.bus.app.controller;
 import com.bus.app.DTO.CarroListaDTO;
 import com.bus.app.excepciones.ResourceNotFoundException;
 import com.bus.app.modelo.Carro;
+import com.bus.app.modelo.Conductor;
 import com.bus.app.modelo.TipoVehiculo;
 import com.bus.app.modelo.TituloPropiedad;
 import com.bus.app.repositorio.CarroRepositorio;
@@ -11,6 +12,7 @@ import com.bus.app.services.TipoVehiculoServicio;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -21,7 +23,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/v1/")
+@RequestMapping("/api/v1/carros")
 @CrossOrigin
 public class CarroControlador {
 
@@ -33,7 +35,7 @@ public class CarroControlador {
     @Autowired
     private TipoVehiculoServicio tipoVehiculoServicio;
 
-    @GetMapping("/carros")
+    @GetMapping()
     public List<CarroListaDTO> listAll() {
         List<Carro> carros = carrosRepositorio.findAll();
         return carros.stream()
@@ -44,18 +46,60 @@ public class CarroControlador {
                         carro.getAnyo(),
                         carro.getConsumo(),
                         carro.getTipoVehiculo(),
-                        carro.getNumeroUnidad()
+                        carro.getNumeroUnidad(),
+                        carro.getFechaAlta()
                 ))
                 .toList();
     }
 
+    @GetMapping("/pageable")
+    public ResponseEntity<Page<CarroListaDTO>> listAllPageable(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "numeroUnidad-asc") String orderBy) {
 
-    @GetMapping("/carros/tipoVehiculos")
+        Page<Carro> carros = carroService.findAll(page,size,orderBy);
+        // Mapear el contenido de la página (carros) a DTOs
+        Page<CarroListaDTO> carroListaDTOs = carros.map(carro -> new CarroListaDTO(
+                carro.getId(),
+                carro.getModelo(),
+                carro.getMarca(),
+                carro.getAnyo(),
+                carro.getConsumo(),
+                carro.getTipoVehiculo(),
+                carro.getNumeroUnidad(),
+                carro.getFechaAlta()
+        ));
+        return ResponseEntity.ok(carroListaDTOs); // Return DTO list
+    }
+
+
+    @GetMapping("/filter-pageable")
+    public  ResponseEntity<Page<CarroListaDTO>> listAllFilteredPageable(
+            @RequestParam(required = false) String marca,
+            @RequestParam(required = false) String modelo,
+            @RequestParam(required = false) Long anyo,
+            @RequestParam(required = false) Long numeroUnidad,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "numeroUnidad-asc") String orderBy) {
+        try {
+            Page<CarroListaDTO> carros =
+                                    carroService.listFilteredPageable
+                                                    (page, size, marca, modelo, anyo, numeroUnidad,orderBy);
+            return ResponseEntity.ok(carros);
+        } catch (Exception e) {
+            logger.error("Ocurrió un error al filtrar los carros: ", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
+    }
+
+    @GetMapping("/tipoVehiculos")
     public List<TipoVehiculo> listAllTipoVehiculos() {
         return tipoVehiculoServicio.findAll();
     }
 
-    @PostMapping("/carros")
+    @PostMapping()
     public ResponseEntity<Carro> guardarCarro(@RequestBody Carro carro) {
         try {
             Carro carroGuardado = carroService.save(carro);
@@ -67,7 +111,7 @@ public class CarroControlador {
         }
     }
 
-    @PutMapping("/carros/{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<Carro> actualizarCarro(@PathVariable Long id , @RequestBody Carro carro) {
         try {
             Carro carroGuardado  = carroService.save(carro);
@@ -79,7 +123,7 @@ public class CarroControlador {
         }
     }
 
-    @GetMapping("/carros/{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<Carro> findById(@PathVariable Long id) {
         try {
             Carro carro = carrosRepositorio.findById(id).orElseThrow(() -> new ResourceNotFoundException("Carro no encontrado"));
@@ -90,7 +134,7 @@ public class CarroControlador {
         }
     }
 
-    @DeleteMapping("/carros/{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<String> eliminarCarro(@PathVariable Long id) {
         try {
             carroService.delete(id);
@@ -101,7 +145,7 @@ public class CarroControlador {
         }
     }
 
-    @GetMapping("/carros/existe/{numeroUnidad}")
+    @GetMapping("/existe/{numeroUnidad}")
     public ResponseEntity<Boolean> existeCarro(@PathVariable Long numeroUnidad) {
         try {
             boolean existe = carroService.existsByNumeroUnidad(numeroUnidad);
@@ -112,7 +156,7 @@ public class CarroControlador {
         }
     }
 
-    @GetMapping("carros/existeEdicion")
+    @GetMapping("/existeEdicion")
     public ResponseEntity<Boolean> verificarNumeroUnidadModoEdicion(
             @RequestParam("numeroUnidad") Long numeroUnidad,
             @RequestParam("carroId") Long carroId) {
@@ -132,7 +176,7 @@ public class CarroControlador {
             }
     }
 
-    @GetMapping("carros/existePDF/{id}")
+    @GetMapping("/existePDF/{id}")
     public ResponseEntity<Boolean> existePdfBBDD(@PathVariable Long id) {
         try {
             Carro carro = carroService.findById(id);
@@ -147,7 +191,7 @@ public class CarroControlador {
         }
     }
 
-    @GetMapping("carros/descargar/{id}")
+    @GetMapping("/descargar/{id}")
     public ResponseEntity<byte[]> descargarArchivo(@PathVariable Long id) {
         try {
             Carro carro = carroService.findById(id);
@@ -164,7 +208,7 @@ public class CarroControlador {
         }
     }
 
-    @PostMapping("/carros/agregarRegistro")
+    @PostMapping("/agregarRegistro")
     public Carro agregarRegistro(@RequestBody Carro carro) {
         return null;
     }

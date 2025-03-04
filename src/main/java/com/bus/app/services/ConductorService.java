@@ -11,6 +11,6 @@ public interface ConductorService
      Conductor save(Conductor conductor);
      Page<Conductor> findAll(int page, int size,String orderBy);
      void deleteById(Long id);
-     Page<Conductor> obtenerConductoresConFiltro(String nombre, String apellido, String dni, int page, int size);
+     Page<Conductor> obtenerConductoresConFiltro(String nombre, String apellido, String dni, int page, int size, String orderBy);
      Optional<Conductor> findById(Long id);
 }
