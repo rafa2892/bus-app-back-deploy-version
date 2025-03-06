@@ -68,6 +68,11 @@ public class Carro implements AuditableEntity {
     @OrderBy("fechaAlta DESC")  // Ordena por fecha de manera descendente
     private List<Historial> registroHistorial;
 
+    @JsonManagedReference
+    @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Viaje> viajes;
+
+
 
 
 

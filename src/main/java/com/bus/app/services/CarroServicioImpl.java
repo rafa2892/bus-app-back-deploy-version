@@ -177,7 +177,13 @@ public class CarroServicioImpl implements CarroService {
                     return imagen;
                 }).toList();
 
-                Optional<Carro> o = carroRepositorio.findById(carro.getId());
+
+                Optional<Carro> o = Optional.empty();
+
+                if(carro.getId() != null) {
+                     o = carroRepositorio.findById(carro.getId());
+                }
+
                 Carro cbd = new Carro();
 
                 if(o.isPresent()) {cbd = o.get();}

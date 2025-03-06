@@ -1,6 +1,7 @@
 package com.bus.app.modelo;
 
 import com.bus.app.tools.AuditableEntity;
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,7 @@ public class Viaje implements AuditableEntity  {
 
     private Date fecha;
 
+    @JsonBackReference
     @ManyToOne
     @JoinColumn(name = "carro_id")
     private Carro carro;
