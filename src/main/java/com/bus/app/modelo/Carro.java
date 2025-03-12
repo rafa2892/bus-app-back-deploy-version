@@ -69,7 +69,7 @@ public class Carro implements AuditableEntity {
     private List<Historial> registroHistorial;
 
     @JsonManagedReference
-    @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(mappedBy = "carro", cascade = CascadeType.ALL)
     private List<Viaje> viajes;
 
 
